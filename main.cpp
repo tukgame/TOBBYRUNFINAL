@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 	{
 		std::cout << "GLEW OK\n";
 	}
-
+	//add
 	Initshader();
 	InitBuffer();
 	glutDisplayFunc(Display);
