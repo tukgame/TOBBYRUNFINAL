@@ -3,11 +3,11 @@
 
 #include <iostream>
 #include <vector>
-#include "GL/glew.h"
-#include "GL/freeglut.h"
-#include "GL/glm/glm.hpp"
-#include "GL/glm/ext.hpp"
-#include "GL/glm/gtc/matrix_transform.hpp"
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+#include <GL/glm/glm.hpp>
+#include <GL/glm/ext.hpp>
+#include <GL/glm/gtc/matrix_transform.hpp>
 #include "shader.h"
 #include "objReader.h"
 #include "init.h"

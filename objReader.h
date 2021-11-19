@@ -5,11 +5,11 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
-#include "GL/glew.h"
-#include "GL/freeglut.h"
-#include "GL/glm/glm.hpp"
-#include "GL/glm/ext.hpp"
-#include "GL/glm/gtc/matrix_transform.hpp"
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+#include <GL/glm/glm.hpp>
+#include <GL/glm/ext.hpp>
+#include <GL/glm/gtc/matrix_transform.hpp>
 
 class objReader {
 public:
