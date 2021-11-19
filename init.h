@@ -4,30 +4,20 @@ GLuint g_window_h = 600;
 GLuint Hexa_VAO;
 GLuint Hexa_VBO[2];
 
-GLuint Py_VAO;
-GLuint Py_VBO[2];
-GLuint Light_VAO;
-GLuint Light_VBO[2];
-
 GLuint LINE_VAO;
 GLuint LINE_VBO[2];
 
 objReader h;
-objReader l;
-objReader p;
 
 float light_r = 1.0f;
 float light_g = 1.0f;
 float light_b = 1.0f;
 
-float z_light = 3.0f;
-float y_rotate = 0.0f;
 float r_light = 0.0f;
-float y_light = 0.0f;
+
 
 int hexadragon;
-int pyramid;
-int light;
+
 
 glm::mat4 model = glm::mat4(1.0f);
 glm::mat4 T = glm::mat4(1.0f);
@@ -55,14 +45,8 @@ float N[] = {
 
 void InitBuffer()
 {
-
-	//// 5.1. VAO 객체 생성 및 바인딩
 	glGenVertexArrays(1, &Hexa_VAO);
-	glGenVertexArrays(1, &Py_VAO);
-	glGenVertexArrays(1, &Light_VAO);
 	glGenBuffers(2, Hexa_VBO);
-	glGenBuffers(2, Py_VBO);
-	glGenBuffers(2, Light_VBO);
 
 	hexadragon = h.loadObj_normalize_center("a.obj");
 
@@ -78,39 +62,6 @@ void InitBuffer()
 	glBindBuffer(GL_ARRAY_BUFFER, Hexa_VBO[1]);
 	glBufferData(GL_ARRAY_BUFFER, h.outvertex.size() * sizeof(glm::vec3), &h.outnormal[0], GL_STATIC_DRAW);
 	GLint nAttribute = glGetAttribLocation(s_program, "aNormal");
-	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	glEnableVertexAttribArray(nAttribute);
-
-	light = l.loadObj_normalize_center("a.obj");
-
-	// 2 triangles for quad floor
-	glUseProgram(s_program);
-	glBindVertexArray(Light_VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, Light_VBO[0]);
-	glBufferData(GL_ARRAY_BUFFER, l.outvertex.size() * sizeof(glm::vec3), &l.outvertex[0], GL_STATIC_DRAW);
-	pAttribute = glGetAttribLocation(s_program, "aPos");
-	glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	glEnableVertexAttribArray(pAttribute);
-
-	glBindBuffer(GL_ARRAY_BUFFER, Light_VBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, l.outvertex.size() * sizeof(glm::vec3), &l.outnormal[0], GL_STATIC_DRAW);
-	nAttribute = glGetAttribLocation(s_program, "aNormal");
-	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	glEnableVertexAttribArray(nAttribute);
-
-	pyramid = p.loadObj_normalize_center("a.obj");
-
-	glUseProgram(s_program);
-	glBindVertexArray(Py_VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, Py_VBO[0]);
-	glBufferData(GL_ARRAY_BUFFER, p.outvertex.size() * sizeof(glm::vec3), &p.outvertex[0], GL_STATIC_DRAW);
-	pAttribute = glGetAttribLocation(s_program, "aPos");
-	glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	glEnableVertexAttribArray(pAttribute);
-
-	glBindBuffer(GL_ARRAY_BUFFER, Py_VBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, p.outvertex.size() * sizeof(glm::vec3), &p.outnormal[0], GL_STATIC_DRAW);
-	nAttribute = glGetAttribLocation(s_program, "aNormal");
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
 
