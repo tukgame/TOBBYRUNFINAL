@@ -64,7 +64,7 @@ void InitBuffer()
 	glGenBuffers(2, Py_VBO);
 	glGenBuffers(2, Light_VBO);
 
-	hexadragon = h.loadObj_normalize_center("s.obj");
+	hexadragon = h.loadObj_normalize_center("a.obj");
 
 	// 2 triangles for quad floor
 	glUseProgram(s_program);
@@ -81,7 +81,7 @@ void InitBuffer()
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
 
-	light = l.loadObj_normalize_center("s.obj");
+	light = l.loadObj_normalize_center("a.obj");
 
 	// 2 triangles for quad floor
 	glUseProgram(s_program);
@@ -98,7 +98,7 @@ void InitBuffer()
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
 
-	pyramid = p.loadObj_normalize_center("s.obj");
+	pyramid = p.loadObj_normalize_center("a.obj");
 
 	glUseProgram(s_program);
 	glBindVertexArray(Py_VAO);
