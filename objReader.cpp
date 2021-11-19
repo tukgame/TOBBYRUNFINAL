@@ -1,4 +1,4 @@
-#include "objRead.h"
+#include "objReader.h"
 
 int objReader::loadObj(const char* filename)
 {

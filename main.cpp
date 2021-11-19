@@ -8,8 +8,8 @@
 #include "GL/glm/glm.hpp"
 #include "GL/glm/ext.hpp"
 #include "GL/glm/gtc/matrix_transform.hpp"
-#include "shader25.h"
-#include "objRead.h"
+#include "shader.h"
+#include "objReader.h"
 #include "init.h"
 using namespace std;
 

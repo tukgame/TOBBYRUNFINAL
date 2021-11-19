@@ -134,8 +134,8 @@ int MakeFragmentShader(const char* fragmentPath, int count)
 }
 
 void Initshader() {
-	vertexshader = MakeVertexShader("v2.glsl", 0);
-	fragmentshader = MakeFragmentShader("f.glsl", 0);
+	vertexshader = MakeVertexShader("vertex.glsl", 0);
+	fragmentshader = MakeFragmentShader("fragment.glsl", 0);
 	//-- shader Program
 	s_program = glCreateProgram();
 	glAttachShader(s_program, vertexshader);
