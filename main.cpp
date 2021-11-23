@@ -57,21 +57,13 @@ void Display()
 	glUseProgram(s_program);
 
 	makeCP();
-
-	lightPosLocation = glGetUniformLocation(s_program, "lightPos");
-	glUniform3f(lightPosLocation, 1.0f, 0.0f, 0.0f);
-	viewPosLocation = glGetUniformLocation(s_program, "viewPos");
-	glUniform3f(viewPosLocation, 0.0f, 0.5f, 2.0f);
-	lightColorLocation = glGetUniformLocation(s_program, "lightColor");
-	glUniform3f(lightColorLocation, 1.0f, 1.0f, 1.0f);
-
 	//조명
 	lightPosLocation = glGetUniformLocation(s_program, "lightPos");
 	glUniform3f(lightPosLocation, 3.0f * sin(glm::radians(r_light)), 0.0f, 3.0f * cos(glm::radians(r_light)));
 	viewPosLocation = glGetUniformLocation(s_program, "viewPos");
 	glUniform3f(viewPosLocation, 0.0f, 0.5f, 2.0f);
 	lightColorLocation = glGetUniformLocation(s_program, "lightColor");
-	glUniform3f(lightColorLocation, 0.3, 0.3, 0.3);
+	glUniform3f(lightColorLocation, light_r, light_g, light_b);
 
 
 
@@ -81,30 +73,6 @@ void Display()
 	//태양
 	S = glm::scale(model, glm::vec3(0.7f, 0.7f, 0.7f));
 	T = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-	modelLocation = glGetUniformLocation(s_program, "model");
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
-
-	glBindVertexArray(Hexa_VAO);
-	glDrawArrays(GL_TRIANGLES, 0, hexadragon);
-
-	//지구
-	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
-	glUniform3f(outColorLocation, 0.0f, 1.0f, 0.0f);
-
-	S = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
-	T = glm::translate(model, glm::vec3(-1.5f, 0.0f, 0.0f));
-	modelLocation = glGetUniformLocation(s_program, "model");
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
-
-	glBindVertexArray(Hexa_VAO);
-	glDrawArrays(GL_TRIANGLES, 0, hexadragon);
-
-	//달
-	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
-	glUniform3f(outColorLocation, 0.0f, 0.0f, 1.0f);
-
-	S = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-	T = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
 

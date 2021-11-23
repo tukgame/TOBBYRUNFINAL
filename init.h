@@ -92,7 +92,7 @@ void Reshape(int w, int h)
 	glViewport(0, 0, w, h);
 }
 void makeCP() {
-	glm::vec3 cameraPos = glm::vec3(0.0f, 0.5f, 2.0f);
+	glm::vec3 cameraPos = glm::vec3(0.0f, 0.7f, 2.0f);
 	glm::vec3 cameraDirection = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	glm::mat4 view = glm::mat4(1.0f);
