@@ -19,6 +19,9 @@ float sky_b = 0.8f;
 
 float r_light = 0.0f;
 
+float camera_x = 0.0f;
+float camera_y = 0.7f;
+float camera_z = 2.0f;
 
 int hexadragon;
 
@@ -96,7 +99,7 @@ void Reshape(int w, int h)
 	glViewport(0, 0, w, h);
 }
 void makeCP() {
-	glm::vec3 cameraPos = glm::vec3(0.0f, 0.7f, 2.0f);
+	glm::vec3 cameraPos = glm::vec3(camera_x, camera_y, camera_z);
 	glm::vec3 cameraDirection = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	glm::mat4 view = glm::mat4(1.0f);

@@ -119,6 +119,18 @@ void Keyboard(unsigned char key, int x, int y)
 		light_b = 0.5f;
 		break;
 	}
+	case 'u': { //위에서보기
+		camera_x = 0.0f;
+		camera_y = 3.0f;
+		camera_z = 0.1f;
+		break;
+	}
+	case 'b': { //뒤에서보기
+		camera_x = 0.0f;
+		camera_y = 0.7f;
+		camera_z = 2.0f;
+		break;
+	}
 	case 'q': {
 		exit(EXIT_FAILURE);
 		break;
