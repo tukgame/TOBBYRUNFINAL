@@ -58,13 +58,20 @@ void Display()
 
 	makeCP();
 
+	lightPosLocation = glGetUniformLocation(s_program, "lightPos");
+	glUniform3f(lightPosLocation, 1.0f, 0.0f, 0.0f);
+	viewPosLocation = glGetUniformLocation(s_program, "viewPos");
+	glUniform3f(viewPosLocation, 0.0f, 0.5f, 2.0f);
+	lightColorLocation = glGetUniformLocation(s_program, "lightColor");
+	glUniform3f(lightColorLocation, 1.0f, 1.0f, 1.0f);
+
 	//Α¶Έν
 	lightPosLocation = glGetUniformLocation(s_program, "lightPos");
 	glUniform3f(lightPosLocation, 3.0f * sin(glm::radians(r_light)), 0.0f, 3.0f * cos(glm::radians(r_light)));
 	viewPosLocation = glGetUniformLocation(s_program, "viewPos");
 	glUniform3f(viewPosLocation, 0.0f, 0.5f, 2.0f);
 	lightColorLocation = glGetUniformLocation(s_program, "lightColor");
-	glUniform3f(lightColorLocation, light_r, light_g, light_b);
+	glUniform3f(lightColorLocation, 0.3, 0.3, 0.3);
 
 
 
