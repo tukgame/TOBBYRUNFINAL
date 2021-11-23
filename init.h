@@ -13,6 +13,10 @@ float light_r = 1.0f;
 float light_g = 1.0f;
 float light_b = 1.0f;
 
+float sky_r = 0.4f;
+float sky_g = 0.6f;
+float sky_b = 0.8f;
+
 float r_light = 0.0f;
 
 

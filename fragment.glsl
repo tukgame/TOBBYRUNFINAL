@@ -18,7 +18,7 @@ void main(void)
    vec3 norm = normalize(Normal);
    vec3 light = normalize(lightDir);
    float diffuseLight = max(dot(Normal, light), 0.0);
-   float d = 1.0f;
+   float d = 2.0f;
    vec3 diffuse = d * diffuseLight * lightColor;
 
    int shininess = 128;
