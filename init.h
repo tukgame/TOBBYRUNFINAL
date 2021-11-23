@@ -1,5 +1,5 @@
-GLuint g_window_w = 600;
-GLuint g_window_h = 600;
+GLuint g_window_w = 800;
+GLuint g_window_h = 800;
 
 GLuint Hexa_VAO;
 GLuint Hexa_VBO[2];
