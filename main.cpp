@@ -70,14 +70,14 @@ void Display()
 	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
 	glUniform3f(outColorLocation, 1.0f, 0.0f, 0.0f);
 
-	//태양
-	S = glm::scale(model, glm::vec3(0.7f, 0.7f, 0.7f));
-	T = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-	modelLocation = glGetUniformLocation(s_program, "model");
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
+	////태양
+	//S = glm::scale(model, glm::vec3(0.7f, 0.7f, 0.7f));
+	//T = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+	//modelLocation = glGetUniformLocation(s_program, "model");
+	//glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
 
-	glBindVertexArray(Hexa_VAO);
-	glDrawArrays(GL_TRIANGLES, 0, hexadragon);
+	//glBindVertexArray(Hexa_VAO);
+	//glDrawArrays(GL_TRIANGLES, 0, hexadragon);
 
 	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
 	glUniform3f(outColorLocation, 1.0f, 0.6f, 0.3f);
@@ -89,7 +89,20 @@ void Display()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
 
 	glBindVertexArray(Hexa_VAO);
-	glDrawArrays(GL_TRIANGLES, 0, hexadragon);
+	glDrawArrays(GL_TRIANGLES, 0, hexadragon);	
+	
+	//나무_1
+
+	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
+	glUniform3f(outColorLocation, 0.0f, 0.8f, 0.0f);
+	
+	S = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	T = glm::translate(model, glm::vec3(2.5f, 0.3f, 0.0f));
+	modelLocation = glGetUniformLocation(s_program, "model");
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
+
+	glBindVertexArray(Tree_1_VAO);
+	glDrawArrays(GL_TRIANGLES, 0, tree_1);
 
 	glutSwapBuffers();
 

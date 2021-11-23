@@ -4,10 +4,14 @@ GLuint g_window_h = 800;
 GLuint Hexa_VAO;
 GLuint Hexa_VBO[2];
 
+GLuint Tree_1_VAO;
+GLuint Tree_1_VBO[2];
+
 GLuint LINE_VAO;
 GLuint LINE_VBO[2];
 
 objReader h;
+objReader t_1;
 
 float light_r = 1.0f;
 float light_g = 1.0f;
@@ -24,6 +28,7 @@ float camera_y = 0.7f;
 float camera_z = 2.0f;
 
 int hexadragon;
+int tree_1;
 
 
 glm::mat4 model = glm::mat4(1.0f);
@@ -52,12 +57,12 @@ float N[] = {
 
 void InitBuffer()
 {
+	//바닥
 	glGenVertexArrays(1, &Hexa_VAO);
 	glGenBuffers(2, Hexa_VBO);
 
 	hexadragon = h.loadObj_normalize_center("a.obj");
 
-	// 2 triangles for quad floor
 	glUseProgram(s_program);
 	glBindVertexArray(Hexa_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, Hexa_VBO[0]);
@@ -71,6 +76,27 @@ void InitBuffer()
 	GLint nAttribute = glGetAttribLocation(s_program, "aNormal");
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
+
+	//나무_1
+	glGenVertexArrays(1, &Tree_1_VAO);
+	glGenBuffers(2, Tree_1_VBO);
+
+	tree_1 = t_1.loadObj_normalize_center("tree_obj.obj");
+
+	glUseProgram(s_program);
+	glBindVertexArray(Tree_1_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, Tree_1_VBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, t_1.outvertex.size() * sizeof(glm::vec3), &t_1.outvertex[0], GL_STATIC_DRAW);
+	pAttribute = glGetAttribLocation(s_program, "aPos");
+	glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(pAttribute);
+
+	glBindBuffer(GL_ARRAY_BUFFER, Tree_1_VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, t_1.outvertex.size() * sizeof(glm::vec3), &t_1.outnormal[0], GL_STATIC_DRAW);
+	nAttribute = glGetAttribLocation(s_program, "aNormal");
+	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(nAttribute);
+
 
 	//// 5.1. VAO 객체 생성 및 바인딩
 	glGenVertexArrays(1, &LINE_VAO);
@@ -108,7 +134,7 @@ void makeCP() {
 	glUniformMatrix4fv(viewLocation, 1, GL_FALSE, &view[0][0]);
 
 	glm::mat4 projection = glm::mat4(1.0f);
-	projection = glm::perspective(glm::radians(30.0f), (float)800 / (float)800, 0.1f, 50.0f);
+	projection = glm::perspective(glm::radians(30.0f), (float)800 / (float)800, 0.1f, 70.0f);
 	projection = glm::translate(projection, glm::vec3(0.0, 0.0, -10.0));
 	unsigned int projectionLocation = glGetUniformLocation(s_program, "projection");
 	glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, &projection[0][0]);
