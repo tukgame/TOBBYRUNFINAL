@@ -4,14 +4,40 @@ GLuint g_window_h = 800;
 GLuint Hexa_VAO;
 GLuint Hexa_VBO[2];
 
+//나무
 GLuint Tree_1_VAO;
 GLuint Tree_1_VBO[2];
+GLuint Tree_2_VAO;
+GLuint Tree_2_VBO[2];
+
+//철수
+GLuint head_VAO;
+GLuint head_VBO[2];
+GLuint arm_l_VAO;
+GLuint arm_l_VBO[2];
+GLuint arm_r_VAO;
+GLuint arm_r_VBO[2];
+GLuint leg_VAO;
+GLuint leg_VBO[2];
+
+//장애물
+GLuint trash_VAO;
+GLuint trash_VBO[2];
+GLuint oak_VAO;
+GLuint oak_VBO[2];
 
 GLuint LINE_VAO;
 GLuint LINE_VBO[2];
 
 objReader h;
 objReader t_1;
+objReader t_2;
+objReader headbody;
+objReader arm_l;
+objReader arm_r;
+objReader leg;
+objReader trash;
+objReader oak;
 
 float light_r = 1.0f;
 float light_g = 1.0f;
@@ -29,6 +55,13 @@ float camera_z = 2.0f;
 
 int hexadragon;
 int tree_1;
+int tree_2;
+int hb;
+int a_l;
+int a_r;
+int l;
+int tra;
+int o;
 
 
 glm::mat4 model = glm::mat4(1.0f);
@@ -46,21 +79,39 @@ struct trees {
 	float t_x;
 	float t_z;
 	int tree;
+	GLuint VAO;
 };
 
 trees t[10];
 
 void set() {
 	int i = 0;
+	int j = 0;
 	for (i; i < 5; i++) {
 		t[i].t_x = -2.5f;
 		t[i].t_z = -4.0f + (i * 2.0f);
-		t[i].tree = tree_1;
+		j = rand() % 2;
+		if (j == 0) {
+			t[i].tree = tree_1;
+			t[i].VAO = Tree_1_VAO;
+		}
+		else {
+			t[i].tree = tree_2;
+			t[i].VAO = Tree_2_VAO;
+		}
 	}
 	for (i; i < 10; i++) {
 		t[i].t_x = 2.5f;
-		t[i].t_z = -4.0f + ((i-5) * 2.0f);
-		t[i].tree = tree_1;
+		t[i].t_z = -4.0f + ((i - 5) * 2.0f);
+		j = rand() % 2;
+		if (j == 1) {
+			t[i].tree = tree_1;
+			t[i].VAO = Tree_1_VAO;
+		}
+		else {
+			t[i].tree = tree_2;
+			t[i].VAO = Tree_2_VAO;
+		}
 	}
 }
 
@@ -103,7 +154,7 @@ void InitBuffer()
 	glGenVertexArrays(1, &Tree_1_VAO);
 	glGenBuffers(2, Tree_1_VBO);
 
-	tree_1 = t_1.loadObj_normalize_center("tree2.obj");
+	tree_1 = t_1.loadObj_normalize_center("tree_1.obj");
 
 	glUseProgram(s_program);
 	glBindVertexArray(Tree_1_VAO);
@@ -115,6 +166,27 @@ void InitBuffer()
 
 	glBindBuffer(GL_ARRAY_BUFFER, Tree_1_VBO[1]);
 	glBufferData(GL_ARRAY_BUFFER, t_1.outvertex.size() * sizeof(glm::vec3), &t_1.outnormal[0], GL_STATIC_DRAW);
+	nAttribute = glGetAttribLocation(s_program, "aNormal");
+	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(nAttribute);
+
+	
+	//나무_2
+	glGenVertexArrays(1, &Tree_2_VAO);
+	glGenBuffers(2, Tree_2_VBO);
+
+	tree_2 = t_2.loadObj_normalize_center("tree_2.obj");
+
+	glUseProgram(s_program);
+	glBindVertexArray(Tree_2_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, Tree_2_VBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, t_2.outvertex.size() * sizeof(glm::vec3), &t_2.outvertex[0], GL_STATIC_DRAW);
+	pAttribute = glGetAttribLocation(s_program, "aPos");
+	glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(pAttribute);
+
+	glBindBuffer(GL_ARRAY_BUFFER, Tree_2_VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, t_2.outvertex.size() * sizeof(glm::vec3), &t_2.outnormal[0], GL_STATIC_DRAW);
 	nAttribute = glGetAttribLocation(s_program, "aNormal");
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
