@@ -71,7 +71,7 @@ void Display()
 
 
 	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
-	glUniform3f(outColorLocation, 1.0f, 0.0f, 0.0f);
+	glUniform3f(outColorLocation, 1.0f, 1.0f, 1.0f);
 
 	////태양
 	//S = glm::scale(model, glm::vec3(0.7f, 0.7f, 0.7f));
@@ -82,10 +82,20 @@ void Display()
 	//glBindVertexArray(Hexa_VAO);
 	//glDrawArrays(GL_TRIANGLES, 0, hexadragon);
 
+	//플레이어 
+	S = glm::scale(model, glm::vec3(0.45f, 0.6f, 0.45f));
+	T = glm::translate(model, glm::vec3(0.0f, -0.1f, 4.0f));
+	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelLocation = glGetUniformLocation(s_program, "model");
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R));
+
+	glBindVertexArray(head_VAO);
+	glDrawArrays(GL_TRIANGLES, 0, hb);
+
+	//바닥
 	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
 	glUniform3f(outColorLocation, 1.0f, 0.6f, 0.3f);
 
-	//바닥
 	S = glm::scale(model, glm::vec3(5.0f, 3.0f, 5.0f));
 	T = glm::translate(model, glm::vec3(0.0f, -3.7f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
@@ -95,8 +105,6 @@ void Display()
 	glDrawArrays(GL_TRIANGLES, 0, hexadragon);	
 	
 	//나무_1
-
-	
 	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
 	glUniform3f(outColorLocation, 0.0f, 0.8f, 0.0f);
 	

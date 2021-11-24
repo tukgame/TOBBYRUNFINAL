@@ -195,6 +195,25 @@ void InitBuffer()
 
 
 	//플레이어
+	glGenVertexArrays(1, &head_VAO);
+	glGenBuffers(2, head_VBO);
+
+	hb = headbody.loadObj_normalize_center("headbody.obj");
+
+	glUseProgram(s_program);
+	glBindVertexArray(head_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, head_VBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, headbody.outvertex.size() * sizeof(glm::vec3), &headbody.outvertex[0], GL_STATIC_DRAW);
+	pAttribute = glGetAttribLocation(s_program, "aPos");
+	glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(pAttribute);
+
+	glBindBuffer(GL_ARRAY_BUFFER, head_VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, headbody.outvertex.size() * sizeof(glm::vec3), &headbody.outnormal[0], GL_STATIC_DRAW);
+	nAttribute = glGetAttribLocation(s_program, "aNormal");
+	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(nAttribute);
+
 
 	//// 5.1. VAO 객체 생성 및 바인딩
 	glGenVertexArrays(1, &LINE_VAO);
