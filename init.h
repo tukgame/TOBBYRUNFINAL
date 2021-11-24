@@ -42,6 +42,28 @@ int viewPosLocation;
 int lightColorLocation;
 int outColorLocation;
 
+struct trees {
+	float t_x;
+	float t_z;
+	int tree;
+};
+
+trees t[5];
+
+void set() {
+	int i = 0;
+	for (i; i < 5; i++) {
+		t[i].t_x = -2.5f;
+		t[i].t_z = -4.0f + (i * 2.0f);
+		t[i].tree = tree_1;
+	}
+	for (i; i < 10; i++) {
+		t[i].t_x = 2.5f;
+		t[i].t_z = -4.0f + ((i-5) * 2.0f);
+		t[i].tree = tree_1;
+	}
+}
+
 float LineData[] = {
 	-3.0f, 0.0f, 0.0f,
 	3.0f, 0.0f, 0.0f,
