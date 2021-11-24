@@ -194,6 +194,8 @@ void InitBuffer()
 	glEnableVertexAttribArray(nAttribute);
 
 
+	//플레이어
+
 	//// 5.1. VAO 객체 생성 및 바인딩
 	glGenVertexArrays(1, &LINE_VAO);
 	glGenBuffers(2, LINE_VBO);
