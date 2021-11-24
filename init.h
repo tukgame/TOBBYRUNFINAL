@@ -87,6 +87,8 @@ trees t[10];
 void set() {
 	int i = 0;
 	int j = 0;
+	srand((unsigned int)time(NULL));
+
 	for (i; i < 5; i++) {
 		t[i].t_x = -2.5f;
 		t[i].t_z = -4.0f + (i * 2.0f);
