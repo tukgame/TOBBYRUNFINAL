@@ -101,9 +101,10 @@ void Display()
 	glUniform3f(outColorLocation, 0.0f, 0.8f, 0.0f);
 	
 	for (int i = 0; i < 10; i++) {
+		S = glm::scale(model, glm::vec3(0.7f, 1.0f, 0.7f));
 		T = glm::translate(model, glm::vec3(t[i].t_x, 0.3f, t[i].t_z));
 		modelLocation = glGetUniformLocation(s_program, "model");
-		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T));
+		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
 
 		glBindVertexArray(Tree_1_VAO);
 		glDrawArrays(GL_TRIANGLES, 0, t[i].tree);
@@ -159,9 +160,8 @@ void Keyboard(unsigned char key, int x, int y)
 
 void Timefunc(int value) {
 	for (int i = 0; i < 10; ++i) {
-		if (t[i].t_z >= 5.0f) {
+		if (t[i].t_z >= 4.0f) {
 			t[i].t_z = -4.0f;
-			//std::cout << "!" << std::endl;
 		}
 		t[i].t_z += 0.05f;
 		

@@ -103,7 +103,7 @@ void InitBuffer()
 	glGenVertexArrays(1, &Tree_1_VAO);
 	glGenBuffers(2, Tree_1_VBO);
 
-	tree_1 = t_1.loadObj_normalize_center("tree_obj.obj");
+	tree_1 = t_1.loadObj_normalize_center("tree2.obj");
 
 	glUseProgram(s_program);
 	glBindVertexArray(Tree_1_VAO);
