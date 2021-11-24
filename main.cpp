@@ -15,6 +15,7 @@ using namespace std;
 
 void Display();
 void Keyboard(unsigned char key, int x, int y);
+void Timefunc(int value);
 
 int n_value = 0;
 int m_value = 0;
@@ -42,6 +43,7 @@ int main(int argc, char** argv)
 	set();
 	glutDisplayFunc(Display);
 	glutReshapeFunc(Reshape);
+	glutTimerFunc(10, Timefunc, 1);
 	glutKeyboardFunc(Keyboard);
 	glutMainLoop();
 
@@ -153,4 +155,17 @@ void Keyboard(unsigned char key, int x, int y)
 	}
 	}
 	glutPostRedisplay();
+}
+
+void Timefunc(int value) {
+	for (int i = 0; i < 10; ++i) {
+		if (t[i].t_z >= 5.0f) {
+			t[i].t_z = -4.0f;
+			//std::cout << "!" << std::endl;
+		}
+		t[i].t_z += 0.05f;
+		
+	}
+	glutPostRedisplay();
+	glutTimerFunc(10, Timefunc, 1);
 }

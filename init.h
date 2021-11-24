@@ -48,7 +48,7 @@ struct trees {
 	int tree;
 };
 
-trees t[5];
+trees t[10];
 
 void set() {
 	int i = 0;
