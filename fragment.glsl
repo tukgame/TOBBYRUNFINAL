@@ -28,7 +28,7 @@ void main(void)
    specularLight = pow(specularLight, shininess);
    vec3 specular = specularLight * lightColor;
 
-   vec3 result = (ambient + diffuse + specular) * Out_Color;
+   vec3 result = (ambient + diffuse) * Out_Color;
 
    FragColor = vec4(result, 1.0f);
 }
