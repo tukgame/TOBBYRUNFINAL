@@ -17,8 +17,10 @@ GLuint arm_l_VAO;
 GLuint arm_l_VBO[2];
 GLuint arm_r_VAO;
 GLuint arm_r_VBO[2];
-GLuint leg_VAO;
-GLuint leg_VBO[2];
+GLuint leg_l_VAO;
+GLuint leg_l_VBO[2];
+GLuint leg_r_VAO;
+GLuint leg_r_VBO[2];
 
 //장애물
 GLuint trash_VAO;
@@ -35,7 +37,8 @@ objReader t_2;
 objReader headbody;
 objReader arm_l;
 objReader arm_r;
-objReader leg;
+objReader leg_l;
+objReader leg_r;
 objReader trash;
 objReader oak;
 
@@ -59,7 +62,8 @@ int tree_2;
 int hb;
 int a_l;
 int a_r;
-int l;
+int l_l;
+int l_r;
 int tra;
 int o;
 
@@ -215,23 +219,19 @@ void InitBuffer()
 	glEnableVertexAttribArray(nAttribute);
 
 
-	//// 5.1. VAO 객체 생성 및 바인딩
-	glGenVertexArrays(1, &LINE_VAO);
-	glGenBuffers(2, LINE_VBO);
-
-	glBindVertexArray(LINE_VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, LINE_VBO[0]);
-	glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), LineData, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, LINE_VBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof(GLfloat), N, GL_STATIC_DRAW);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
-	glEnableVertexAttribArray(1);
-
-	glEnable(GL_DEPTH_TEST);
+	////// 5.1. VAO 객체 생성 및 바인딩
+	//glGenVertexArrays(1, &LINE_VAO);
+	//glGenBuffers(2, LINE_VBO);
+	//glBindVertexArray(LINE_VAO);
+	//glBindBuffer(GL_ARRAY_BUFFER, LINE_VBO[0]);
+	//glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), LineData, GL_STATIC_DRAW);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+	//glEnableVertexAttribArray(0);
+	//glBindBuffer(GL_ARRAY_BUFFER, LINE_VBO[1]);
+	//glBufferData(GL_ARRAY_BUFFER, 3 * sizeof(GLfloat), N, GL_STATIC_DRAW);
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+	//glEnableVertexAttribArray(1);
+	//glEnable(GL_DEPTH_TEST);
 
 }
 
