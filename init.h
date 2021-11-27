@@ -42,6 +42,8 @@ objReader leg_r;
 objReader trash;
 objReader oak;
 
+
+
 float light_r = 1.0f;
 float light_g = 1.0f;
 float light_b = 1.0f;
@@ -67,6 +69,7 @@ int l_r;
 int tra;
 int o;
 
+float exmove = 0.0f;
 
 glm::mat4 model = glm::mat4(1.0f);
 glm::mat4 T = glm::mat4(1.0f);
@@ -203,7 +206,7 @@ void InitBuffer()
 	glGenVertexArrays(1, &head_VAO);
 	glGenBuffers(2, head_VBO);
 
-	hb = headbody.loadObj_normalize_center("headbody_2.obj");
+	hb = headbody.loadObj_normalize_center("headbody_f.obj");
 
 	glUseProgram(s_program);
 	glBindVertexArray(head_VAO);
@@ -219,87 +222,87 @@ void InitBuffer()
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
 
-	////ÆÈ_¿Þ
-	//glGenVertexArrays(1, &arm_l_VAO);
-	//glGenBuffers(2, arm_l_VBO);
+	//ÆÈ_¿Þ
+	glGenVertexArrays(1, &arm_l_VAO);
+	glGenBuffers(2, arm_l_VBO);
 
-	//a_l = arm_l.loadObj_normalize_center("arm_l.obj");
+	a_l = arm_l.loadObj_normalize_center("arm_l_f.obj");
 
-	//glUseProgram(s_program);
+	glUseProgram(s_program);
 
-	//glBindVertexArray(arm_l_VAO);
-	//glBindBuffer(GL_ARRAY_BUFFER, arm_l_VBO[0]);
-	//glBufferData(GL_ARRAY_BUFFER, arm_l.outvertex.size() * sizeof(glm::vec3), &arm_l.outvertex[0], GL_STATIC_DRAW);
-	//pAttribute = glGetAttribLocation(s_program, "aPos");
-	//glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	//glEnableVertexAttribArray(pAttribute);
+	glBindVertexArray(arm_l_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, arm_l_VBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, arm_l.outvertex.size() * sizeof(glm::vec3), &arm_l.outvertex[0], GL_STATIC_DRAW);
+	pAttribute = glGetAttribLocation(s_program, "aPos");
+	glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(pAttribute);
 
-	//glBindBuffer(GL_ARRAY_BUFFER, arm_l_VBO[1]);
-	//glBufferData(GL_ARRAY_BUFFER, arm_l.outvertex.size() * sizeof(glm::vec3), &arm_l.outnormal[0], GL_STATIC_DRAW);
-	//nAttribute = glGetAttribLocation(s_program, "aNormal");
-	//glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	//glEnableVertexAttribArray(nAttribute);
+	glBindBuffer(GL_ARRAY_BUFFER, arm_l_VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, arm_l.outvertex.size() * sizeof(glm::vec3), &arm_l.outnormal[0], GL_STATIC_DRAW);
+	nAttribute = glGetAttribLocation(s_program, "aNormal");
+	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(nAttribute);
 
-	////ÆÈ_¿À
-	//glGenVertexArrays(1, &arm_r_VAO);
-	//glGenBuffers(2, arm_r_VBO);
+	//ÆÈ_¿À
+	glGenVertexArrays(1, &arm_r_VAO);
+	glGenBuffers(2, arm_r_VBO);
 
-	//a_r = arm_r.loadObj_normalize_center("arm_r.obj");
+	a_r = arm_r.loadObj_normalize_center("arm_r_f.obj");
 
-	//glUseProgram(s_program);
+	glUseProgram(s_program);
 
-	//glBindVertexArray(arm_r_VAO);
-	//glBindBuffer(GL_ARRAY_BUFFER, arm_r_VBO[0]);
-	//glBufferData(GL_ARRAY_BUFFER, arm_r.outvertex.size() * sizeof(glm::vec3), &arm_r.outvertex[0], GL_STATIC_DRAW);
-	//pAttribute = glGetAttribLocation(s_program, "aPos");
-	//glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	//glEnableVertexAttribArray(pAttribute);
+	glBindVertexArray(arm_r_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, arm_r_VBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, arm_r.outvertex.size() * sizeof(glm::vec3), &arm_r.outvertex[0], GL_STATIC_DRAW);
+	pAttribute = glGetAttribLocation(s_program, "aPos");
+	glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(pAttribute);
 
-	//glBindBuffer(GL_ARRAY_BUFFER, arm_r_VBO[1]);
-	//glBufferData(GL_ARRAY_BUFFER, arm_r.outvertex.size() * sizeof(glm::vec3), &arm_r.outnormal[0], GL_STATIC_DRAW);
-	//nAttribute = glGetAttribLocation(s_program, "aNormal");
-	//glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	//glEnableVertexAttribArray(nAttribute);
+	glBindBuffer(GL_ARRAY_BUFFER, arm_r_VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, arm_r.outvertex.size() * sizeof(glm::vec3), &arm_r.outnormal[0], GL_STATIC_DRAW);
+	nAttribute = glGetAttribLocation(s_program, "aNormal");
+	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(nAttribute);
 
-	////´Ù¸® ¿Þ
-	//glGenVertexArrays(1, &leg_l_VAO);
-	//glGenBuffers(2, leg_l_VBO);
+	//´Ù¸® ¿Þ
+	glGenVertexArrays(1, &leg_l_VAO);
+	glGenBuffers(2, leg_l_VBO);
 
-	//l_l = leg_l.loadObj_normalize_center("leg_l.obj");
+	l_l = leg_l.loadObj_normalize_center("leg_l_f.obj");
 
-	//glUseProgram(s_program);
-	//glBindVertexArray(leg_l_VAO);
-	//glBindBuffer(GL_ARRAY_BUFFER, leg_l_VBO[0]);
-	//glBufferData(GL_ARRAY_BUFFER, leg_l.outvertex.size() * sizeof(glm::vec3), &leg_l.outvertex[0], GL_STATIC_DRAW);
-	//pAttribute = glGetAttribLocation(s_program, "aPos");
-	//glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	//glEnableVertexAttribArray(pAttribute);
+	glUseProgram(s_program);
+	glBindVertexArray(leg_l_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, leg_l_VBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, leg_l.outvertex.size() * sizeof(glm::vec3), &leg_l.outvertex[0], GL_STATIC_DRAW);
+	pAttribute = glGetAttribLocation(s_program, "aPos");
+	glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(pAttribute);
 
-	//glBindBuffer(GL_ARRAY_BUFFER, leg_l_VBO[1]);
-	//glBufferData(GL_ARRAY_BUFFER, leg_l.outvertex.size() * sizeof(glm::vec3), &leg_l.outnormal[0], GL_STATIC_DRAW);
-	//nAttribute = glGetAttribLocation(s_program, "aNormal");
-	//glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	//glEnableVertexAttribArray(nAttribute);
+	glBindBuffer(GL_ARRAY_BUFFER, leg_l_VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, leg_l.outvertex.size() * sizeof(glm::vec3), &leg_l.outnormal[0], GL_STATIC_DRAW);
+	nAttribute = glGetAttribLocation(s_program, "aNormal");
+	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(nAttribute);
 
-	////´Ù¸® ¿À
-	//glGenVertexArrays(1, &leg_r_VAO);
-	//glGenBuffers(2, leg_r_VBO);
+	//´Ù¸® ¿À
+	glGenVertexArrays(1, &leg_r_VAO);
+	glGenBuffers(2, leg_r_VBO);
 
-	//l_r = leg_r.loadObj_normalize_center("leg_r.obj");
+	l_r = leg_r.loadObj_normalize_center("leg_r_f.obj");
 
-	//glUseProgram(s_program);
-	//glBindVertexArray(leg_r_VAO);
-	//glBindBuffer(GL_ARRAY_BUFFER, leg_r_VBO[0]);
-	//glBufferData(GL_ARRAY_BUFFER, leg_r.outvertex.size() * sizeof(glm::vec3), &leg_r.outvertex[0], GL_STATIC_DRAW);
-	//pAttribute = glGetAttribLocation(s_program, "aPos");
-	//glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	//glEnableVertexAttribArray(pAttribute);
+	glUseProgram(s_program);
+	glBindVertexArray(leg_r_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, leg_r_VBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, leg_r.outvertex.size() * sizeof(glm::vec3), &leg_r.outvertex[0], GL_STATIC_DRAW);
+	pAttribute = glGetAttribLocation(s_program, "aPos");
+	glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(pAttribute);
 
-	//glBindBuffer(GL_ARRAY_BUFFER, leg_r_VBO[1]);
-	//glBufferData(GL_ARRAY_BUFFER, leg_r.outvertex.size() * sizeof(glm::vec3), &leg_r.outnormal[0], GL_STATIC_DRAW);
-	//nAttribute = glGetAttribLocation(s_program, "aNormal");
-	//glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	//glEnableVertexAttribArray(nAttribute);
+	glBindBuffer(GL_ARRAY_BUFFER, leg_r_VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, leg_r.outvertex.size() * sizeof(glm::vec3), &leg_r.outnormal[0], GL_STATIC_DRAW);
+	nAttribute = glGetAttribLocation(s_program, "aNormal");
+	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(nAttribute);
 
 	//// 5.1. VAO °´Ã¼ »ý¼º ¹× ¹ÙÀÎµù
 	glGenVertexArrays(1, &LINE_VAO);

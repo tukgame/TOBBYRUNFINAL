@@ -82,15 +82,58 @@ void Display()
 	//glBindVertexArray(Hexa_VAO);
 	//glDrawArrays(GL_TRIANGLES, 0, hexadragon);
 
-	//플레이어 
-	S = glm::scale(model, glm::vec3(0.45f, 0.6f, 0.45f));
-	T = glm::translate(model, glm::vec3(0.0f, -0.1f, 4.0f));
+	//플레이어 몸통
+	S = glm::scale(model, glm::vec3(0.4f, 0.45f, 0.5f));
+	T = glm::translate(model, glm::vec3(0.0f + exmove, -0.11f, 4.0f));
 	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R));
 
 	glBindVertexArray(head_VAO);
 	glDrawArrays(GL_TRIANGLES, 0, hb);
+
+	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
+	glUniform3f(outColorLocation, 1.0f, 0.0f, 0.0f);
+
+	S = glm::scale(model, glm::vec3(0.2f, 0.15f, 0.15f));
+	T = glm::translate(model, glm::vec3(-0.18f + exmove, -0.31f, 4.0f));
+	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelLocation = glGetUniformLocation(s_program, "model");
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R));
+
+	glBindVertexArray(arm_l_VAO);
+	glDrawArrays(GL_TRIANGLES, 0, a_l);
+
+	S = glm::scale(model, glm::vec3(0.2f, 0.15f, 0.15f));
+	T = glm::translate(model, glm::vec3(0.18f + exmove, -0.31f, 4.0f));
+	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelLocation = glGetUniformLocation(s_program, "model");
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R));
+
+	glBindVertexArray(arm_r_VAO);
+	glDrawArrays(GL_TRIANGLES, 0, a_r);
+
+	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
+	glUniform3f(outColorLocation, 0.0f, 0.0f, 1.0f);
+
+	S = glm::scale(model, glm::vec3(0.2f, 0.23f, 0.23f));
+	T = glm::translate(model, glm::vec3(-0.07f + exmove, -0.5f, 4.0f));
+	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelLocation = glGetUniformLocation(s_program, "model");
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R));
+
+	glBindVertexArray(leg_l_VAO);
+	glDrawArrays(GL_TRIANGLES, 0, l_l);
+
+	S = glm::scale(model, glm::vec3(0.2f, 0.23f, 0.23f));
+	T = glm::translate(model, glm::vec3(0.07f + exmove, -0.5f, 4.0f));
+	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelLocation = glGetUniformLocation(s_program, "model");
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R));
+
+	glBindVertexArray(leg_r_VAO);
+	glDrawArrays(GL_TRIANGLES, 0, l_r);
+
 
 	//바닥
 	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
@@ -125,8 +168,7 @@ void Display()
 void Keyboard(unsigned char key, int x, int y)
 {
 	switch (key) {
-	case 'a': { //낮
-
+	case '1': { //낮
 		sky_r = 0.4f;
 		sky_g = 0.6f;
 		sky_b = 0.8f;
@@ -136,7 +178,7 @@ void Keyboard(unsigned char key, int x, int y)
 		light_b = 1.0f;
 		break;
 	}
-	case 'n': { //밤
+	case '2': { //밤
 		sky_r = 0.0f;
 		sky_g = 0.0f;
 		sky_b = 0.1f;
@@ -148,7 +190,7 @@ void Keyboard(unsigned char key, int x, int y)
 	}
 	case 'u': { //위에서보기
 		camera_x = 0.0f;
-		camera_y = 3.0f;
+		camera_y = 7.0f;
 		camera_z = 0.1f;
 		break;
 	}
@@ -156,6 +198,26 @@ void Keyboard(unsigned char key, int x, int y)
 		camera_x = 0.0f;
 		camera_y = 0.7f;
 		camera_z = 2.0f;
+		break;
+	}
+	case 'B': { //뒤에서보기
+		camera_x = 0.0f;
+		camera_y = 0.0f;
+		camera_z = 4.0f;
+		break;
+	}
+	case 'U': { //뒤에서보기
+		camera_x = 8.0f;
+		camera_y = 0.0f;
+		camera_z = 0.0f;
+		break;
+	}
+	case 'a': { //뒤에서보기
+		exmove = exmove - 1.0f;
+		break;
+	}
+	case 'd': { //뒤에서보기
+		exmove = exmove + 1.0f;
 		break;
 	}
 	case 'q': {
