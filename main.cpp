@@ -18,6 +18,7 @@ void Keyboard(unsigned char key, int x, int y);
 void Timefunc(int value);
 void Timefunc2(int value);
 void Timefunc3(int value);
+void Timefunc4(int value);
 
 int n_value = 0;
 int m_value = 0;
@@ -53,6 +54,8 @@ int main(int argc, char** argv)
 
 	return 0;
 }
+
+float a = 0.0f;
 
 void Display()
 {
@@ -117,7 +120,7 @@ void Display()
 	glBindVertexArray(arm_r_VAO);
 	glDrawArrays(GL_TRIANGLES, 0, a_r);
 
-	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
+	/*outColorLocation = glGetUniformLocation(s_program, "Out_Color");
 	glUniform3f(outColorLocation, 0.0f, 0.0f, 1.0f);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.23f, 0.23f));
@@ -127,13 +130,14 @@ void Display()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R));
 
 	glBindVertexArray(leg_l_VAO);
-	glDrawArrays(GL_TRIANGLES, 0, l_l);
+	glDrawArrays(GL_TRIANGLES, 0, l_l);*/
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.23f, 0.23f));
 	T = glm::translate(model, glm::vec3(0.07f + exmove, -0.5f, 4.0f));
 	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	TRS = glm::rotate(model, glm::radians(a), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R));
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
 
 	glBindVertexArray(leg_r_VAO);
 	glDrawArrays(GL_TRIANGLES, 0, l_r);
@@ -156,13 +160,13 @@ void Display()
 	glUniform3f(outColorLocation, 0.0f, 0.8f, 0.0f);
 	
 	for (int i = 0; i < 10; i++) {
-		S = glm::scale(model, glm::vec3(0.7f, 1.0f, 0.7f));
+	/*	S = glm::scale(model, glm::vec3(0.7f, 1.0f, 0.7f));
 		T = glm::translate(model, glm::vec3(t[i].t_x, 0.3f, t[i].t_z));
 		modelLocation = glGetUniformLocation(s_program, "model");
 		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
 
 		glBindVertexArray(t[i].VAO);
-		glDrawArrays(GL_TRIANGLES, 0, t[i].tree);
+		glDrawArrays(GL_TRIANGLES, 0, t[i].tree);*/
 	}
 
 	glutSwapBuffers();
@@ -237,6 +241,10 @@ void Keyboard(unsigned char key, int x, int y)
 		}
 		break;
 	}
+	case '+': { //뒤에서보기
+		glutTimerFunc(10, Timefunc4, 1);
+		break;
+	}
 	case 'q': {
 		exit(EXIT_FAILURE);
 		break;
@@ -265,7 +273,7 @@ void Timefunc2(int value) {
 		roofd_10++;
 		exmove += 0.1f;
 		glutPostRedisplay();
-		glutTimerFunc(1, Timefunc2, 2);
+		glutTimerFunc(1, Timefunc2, 1);
 	}
 }
 
@@ -277,6 +285,28 @@ void Timefunc3(int value) {
 		roofa_10++;
 		exmove -= 0.1f;
 		glutPostRedisplay();
-		glutTimerFunc(1, Timefunc3, 3);
+		glutTimerFunc(1, Timefunc3, 1);
 	}
+}
+
+int leg_r_ck = 0;
+
+void Timefunc4(int value) {
+	if (leg_r_ck == 0) {
+		a -= 0.05f;
+	}
+	else {
+		a += 0.05f;
+	}
+
+	if (a < -10.0f) {
+		leg_r_ck = 1;
+	}
+	else if (a > 5.0f) {
+		leg_r_ck = 0;
+	}
+
+	glutPostRedisplay();
+	glutTimerFunc(1, Timefunc4, 1);
+	
 }
