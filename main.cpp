@@ -16,9 +16,13 @@ using namespace std;
 void Display();
 void Keyboard(unsigned char key, int x, int y);
 void Timefunc(int value);
+void Timefunc2(int value);
+void Timefunc3(int value);
 
 int n_value = 0;
 int m_value = 0;
+
+int move_point = 1;
 
 int main(int argc, char** argv)
 {
@@ -165,6 +169,9 @@ void Display()
 
 }
 
+int roofd_10 = 0;
+int roofa_10 = 0;
+
 void Keyboard(unsigned char key, int x, int y)
 {
 	switch (key) {
@@ -213,11 +220,21 @@ void Keyboard(unsigned char key, int x, int y)
 		break;
 	}
 	case 'a': { //뒤에서보기
-		exmove = exmove - 1.0f;
+		if (move_point != 0) {
+			move_point--;
+			roofa_10 = 0;
+			//exmove = exmove - 1.0f;
+			glutTimerFunc(10, Timefunc3, 1);
+		}
 		break;
 	}
 	case 'd': { //뒤에서보기
-		exmove = exmove + 1.0f;
+		if (move_point != 2) {
+			move_point++;
+			roofd_10 = 0;
+			//exmove = exmove + 1.0f;
+			glutTimerFunc(10, Timefunc2, 1);
+		}
 		break;
 	}
 	case 'q': {
@@ -238,4 +255,28 @@ void Timefunc(int value) {
 	}
 	glutPostRedisplay();
 	glutTimerFunc(10, Timefunc, 1);
+}
+
+void Timefunc2(int value) {
+	if (roofd_10 == 10) {
+
+	}
+	else {
+		roofd_10++;
+		exmove += 0.1f;
+		glutPostRedisplay();
+		glutTimerFunc(1, Timefunc2, 2);
+	}
+}
+
+void Timefunc3(int value) {
+	if (roofa_10 == 10) {
+
+	}
+	else {
+		roofa_10++;
+		exmove -= 0.1f;
+		glutPostRedisplay();
+		glutTimerFunc(1, Timefunc3, 3);
+	}
 }
