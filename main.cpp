@@ -23,10 +23,12 @@ void Timefunc(int value);
 void Timefunc2(int value);
 void Timefunc3(int value);
 void Timefunc4(int value);
+void crush();
 
+float rotate4die = 0.0f;
 int n_value = 0;
 int m_value = 0;
-
+int heart = 0;
 int move_point = 1;
 
 int main(int argc, char** argv)
@@ -63,6 +65,7 @@ int main(int argc, char** argv)
 }
 
 float a = 0.0f;
+int useshader = 0;
 
 void Display()
 {
@@ -100,8 +103,9 @@ void Display()
 	S = glm::scale(model, glm::vec3(0.4f, 0.45f, 0.5f));
 	T = glm::translate(model, glm::vec3(0.0f + exmove, -0.11f, 4.0f));
 	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	Rfordie = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R));
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T  * Rfordie * S * R));
 
 	glBindVertexArray(head_VAO);
 	glActiveTexture(GL_TEXTURE0);
@@ -114,9 +118,10 @@ void Display()
 	S = glm::scale(model, glm::vec3(0.2f, 0.15f, 0.15f));
 	T = glm::translate(model, glm::vec3(-0.18f + exmove, -0.31f, 4.0f));
 	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	Rfordie = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 0.0f, 1.0f));
 	TRS = glm::rotate(model, glm::radians(-a), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * Rfordie * S * R * TRS));
 
 	glBindVertexArray(arm_l_VAO);
 	glDrawArrays(GL_TRIANGLES, 0, a_l);
@@ -124,9 +129,10 @@ void Display()
 	S = glm::scale(model, glm::vec3(0.2f, 0.15f, 0.15f));
 	T = glm::translate(model, glm::vec3(0.18f + exmove, -0.31f, 4.0f));
 	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	Rfordie = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 0.0f, 1.0f));
 	TRS = glm::rotate(model, glm::radians(a), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * Rfordie * S * R * TRS));
 
 	glBindVertexArray(arm_r_VAO);
 	glDrawArrays(GL_TRIANGLES, 0, a_r);
@@ -136,20 +142,22 @@ void Display()
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.25f, 0.23f));
 	T = glm::translate(model, glm::vec3(-0.07f + exmove, -0.5f, 4.0f));
+	Rfordie = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 0.0f, 1.0f));
 	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	TRS = glm::rotate(model, glm::radians(-a), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T  * Rfordie * S * R * TRS));
 
 	glBindVertexArray(leg_l_VAO);
 	glDrawArrays(GL_TRIANGLES, 0, l_l);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.25f, 0.23f));
 	T = glm::translate(model, glm::vec3(0.07f + exmove, -0.5f, 4.0f));
+	Rfordie = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 0.0f, 1.0f));
 	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	TRS = glm::rotate(model, glm::radians(a), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T  * Rfordie * S * R * TRS));
 
 	glBindVertexArray(leg_r_VAO);
 	glDrawArrays(GL_TRIANGLES, 0, l_r);
@@ -297,44 +305,51 @@ void Keyboard(unsigned char key, int x, int y)
 	}
 	glutPostRedisplay();
 }
-
+int move_value = 1;
 void Timefunc(int value) {
-	for (int i = 0; i < 10; ++i) {
-		if (t[i].t_z >= 4.0f) {
-			t[i].t_z = -4.0f;
-		}
-		t[i].t_z += 0.05f;
+	if (move_value == 0) {
+		return;
+	}
+	else {
+
+		for (int i = 0; i < 10; ++i) {
+			if (t[i].t_z >= 4.0f) {
+				t[i].t_z = -4.0f;
+			}
+			t[i].t_z += 0.05f;
 		
-	}
-	for (int i = 0; i < 5; ++i) {
-		if (obs_l[i].o_z >= 6.0f) {
-			obs_l[i].o_z = -4.0f;
-			obs_l[i].show = rand() % 2;
-			if (obs_c[i].show == 1 || obs_r[i].show == 1) {
-				obs_l[i].show = 0;
-			}
 		}
-		obs_l[i].o_z += 0.05f;
-	}
-	for (int i = 0; i < 5; ++i) {
-		if (obs_c[i].o_z >= 6.0f) {
-			obs_c[i].o_z = -4.0f;
-			obs_c[i].show = rand() % 2;
-			if (obs_l[i].show == 1 || obs_r[i].show == 1) {
-				obs_c[i].show = 0;
+		for (int i = 0; i < 5; ++i) {
+			if (obs_l[i].o_z >= 6.0f) {
+				obs_l[i].o_z = -4.0f;
+				obs_l[i].show = rand() % 2;
+				if (obs_c[i].show == 1 || obs_r[i].show == 1) {
+					obs_l[i].show = 0;
+				}
 			}
+			obs_l[i].o_z += 0.05f;
 		}
-		obs_c[i].o_z += 0.05f;
-	}
-	for (int i = 0; i < 5; ++i) {
-		if (obs_r[i].o_z >= 6.0f) {
-			obs_r[i].o_z = -4.0f;
-			obs_r[i].show = rand() % 2;
-			if (obs_c[i].show == 1 || obs_l[i].show == 1) {
-				obs_r[i].show = 0;
+		for (int i = 0; i < 5; ++i) {
+			if (obs_c[i].o_z >= 6.0f) {
+				obs_c[i].o_z = -4.0f;
+				obs_c[i].show = rand() % 2;
+				if (obs_l[i].show == 1 || obs_r[i].show == 1) {
+					obs_c[i].show = 0;
+				}
 			}
+			obs_c[i].o_z += 0.05f;
 		}
-		obs_r[i].o_z += 0.05f;
+		for (int i = 0; i < 5; ++i) {
+			if (obs_r[i].o_z >= 6.0f) {
+				obs_r[i].o_z = -4.0f;
+				obs_r[i].show = rand() % 2;
+				if (obs_c[i].show == 1 || obs_l[i].show == 1) {
+					obs_r[i].show = 0;
+				}
+			}
+			obs_r[i].o_z += 0.05f;
+		}
+		crush();
 	}
 	glutPostRedisplay();
 	glutTimerFunc(10, Timefunc, 1);
@@ -387,4 +402,70 @@ void Timefunc4(int value) {
 }
 
 void crush() {
+	for (int i = 0; i < 5; i++) {
+		if (obs_l[i].o_z >= 3.95f && obs_l[i].o_z <= 4.05f && obs_l[i].show == 1) {
+			if (exmove <= -1.0f) {
+				if (heart == 1) {
+					obs_l[i].o_z -= 0.3f;
+					move_value = 0;
+					rotate4die = 90.0f;
+					glutPostRedisplay();
+					return;
+				}
+				else {
+					if (move_point != 2) {
+						move_point++;
+						roofd_10 = 0;
+						//exmove = exmove + 1.0f;
+						glutTimerFunc(1, Timefunc2, 1);
+					}
+					cout << "heart = 1" << endl;
+					heart = 1;
+					return;
+				}
+			}
+		}
+		if (obs_r[i].o_z >= 3.95f && obs_r[i].o_z <= 4.05f && obs_r[i].show == 1) {
+			if (exmove >= 1.0f) {
+				if (heart == 1) {
+					obs_r[i].o_z -= 0.3f;
+					rotate4die = 90.0f;
+					move_value = 0;
+					glutPostRedisplay();
+					return;
+				}
+				else {
+					if (move_point != 0) {
+						move_point--;
+						roofa_10 = 0;
+						//exmove = exmove - 1.0f;
+						glutTimerFunc(1, Timefunc3, 1);
+					}
+					cout << "heart = 1" << endl;
+					heart = 1;
+					return;
+				}
+			}
+		}
+		if (obs_c[i].o_z >= 3.95f && obs_l[i].o_z <= 4.05f && obs_c[i].show == 1) {
+			if (exmove >= -0.1f && exmove <= 0.1f) {
+				if (heart == 1) {
+					obs_c[i].o_z -= 0.3f;
+					move_value = 0;
+					rotate4die = 90.0f;
+					glutPostRedisplay();
+					return;
+				}
+				else {
+					move_point++;
+					roofd_10 = 0;
+					//exmove = exmove + 1.0f;
+					glutTimerFunc(10, Timefunc2, 1);
+					cout << "heart = 1" << endl;
+					heart = 1;
+					return;
+				}
+			}
+		}
+	}
 }

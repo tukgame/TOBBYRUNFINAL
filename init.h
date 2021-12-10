@@ -76,6 +76,7 @@ glm::mat4 model = glm::mat4(1.0f);
 glm::mat4 T = glm::mat4(1.0f);
 glm::mat4 S = glm::mat4(1.0f);
 glm::mat4 R = glm::mat4(1.0f);
+glm::mat4 Rfordie = glm::mat4(1.0f);
 glm::mat4 TRS = glm::mat4(1.0f);
 unsigned int modelLocation;
 int lightPosLocation;
@@ -146,10 +147,7 @@ void set() {
 			obs_l[i].obstacle = tra;
 			obs_l[i].VAO = trash_VAO;
 		}
-		obs_l[i].show = rand() % 2;
-		if (obs_c[i].show == 1 || obs_r[i].show == 1) {
-			obs_l[i].show = 0;
-		}
+		obs_l[i].show = 0;
 	}
 	i = 0;
 	for (i; i < 5; i++) {
@@ -164,10 +162,7 @@ void set() {
 			obs_c[i].obstacle = tra;
 			obs_c[i].VAO = trash_VAO;
 		}
-		obs_c[i].show = rand() % 2;
-		if (obs_l[i].show == 1 || obs_r[i].show == 1) {
-			obs_c[i].show = 0;
-		}
+		obs_c[i].show = 0;
 	}
 	i = 0;
 	for (i; i < 5; i++) {
@@ -182,10 +177,7 @@ void set() {
 			obs_r[i].obstacle = tra;
 			obs_r[i].VAO = trash_VAO;
 		}
-		obs_r[i].show = rand() % 2;
-		if (obs_l[i].show == 1 || obs_c[i].show == 1) {
-			obs_r[i].show = 0;
-		}
+		obs_r[i].show = 0;
 	}
 }
 
