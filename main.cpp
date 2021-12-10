@@ -93,7 +93,6 @@ void Display()
 	glUniform3f(lightColorLocation, light_r, light_g, light_b);
 
 
-
 	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
 	glUniform3f(outColorLocation, 1.0f, 1.0f, 1.0f);
 
@@ -223,6 +222,9 @@ void Display()
 			glDrawArrays(GL_TRIANGLES, 0, obs_r[i].obstacle);
 		}
 	}
+
+
+
 
 	glUseProgram(s_program2);
 	if (menu_point == 0) {

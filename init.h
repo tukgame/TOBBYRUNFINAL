@@ -183,12 +183,10 @@ void set() {
 }
 
 float LineData[] = {
-	-3.0f, 0.0f, 0.0f,
-	3.0f, 0.0f, 0.0f,
-	0.0f, -3.0f, 0.0f,
-	0.0f, 3.0f, 0.0f,
-	0.0f, 0.0f, -3.0f,
-	0.0f, 0.0f, 3.0f,
+	0.5f, 0.0f, -4.0f,
+	0.5f, 0.0f, 4.0f,
+	-0.5f, 0.0f, -4.0f,
+	-0.5f, 0.0f, 4.0f
 };
 float N[] = {
 	0.0f, 1.0f, 0.0f
@@ -478,7 +476,7 @@ void InitBuffer()
 	glGenVertexArrays(1, &Hexa_VAO);
 	glGenBuffers(2, Hexa_VBO);
 
-	hexadragon = h.loadObj_normalize_center("a.obj");
+	hexadragon = h.loadObj_normalize_center("c.obj");
 
 	glUseProgram(s_program);
 	glBindVertexArray(Hexa_VAO);
@@ -695,7 +693,7 @@ void InitBuffer()
 	glGenBuffers(2, LINE_VBO);
 	glBindVertexArray(LINE_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, LINE_VBO[0]);
-	glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), LineData, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(GLfloat), LineData, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, LINE_VBO[1]);
