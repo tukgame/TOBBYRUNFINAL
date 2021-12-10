@@ -22,6 +22,7 @@ void Timefunc(int value);
 void Timefunc2(int value);
 void Timefunc3(int value);
 void Timefunc4(int value);
+void Timefunc_gameend(int value);
 void crush();
 
 float rotate4die = 0.0f;
@@ -245,6 +246,7 @@ void Keyboard(unsigned char key, int x, int y)
 		menu_point++;
 		glutTimerFunc(10, Timefunc, 1);
 		glutTimerFunc(10, Timefunc4, 1);
+		glutTimerFunc(1000, Timefunc_gameend, 1);
 		break;
 	}
 	case '1': { //³·
@@ -443,6 +445,36 @@ void Timefunc5(int value) {
 		shake_time = 0;
 	}
 
+}
+
+int game_time = 0;
+
+void Timefunc_gameend(int value) {
+	game_time++;
+
+	sky_r -= 0.01f;
+	sky_g -= 0.01f;
+	sky_b -= 0.01f;
+
+	light_r -= 0.03f;
+	light_g -= 0.03f;
+	light_b -= 0.03f;
+
+	/*if (game_time == 15) {
+		sky_r = 0.0f;
+		sky_g = 0.0f;
+		sky_b = 0.1f;
+
+		light_r = 0.5f;
+		light_g = 0.5f;
+		light_b = 0.5f;
+	}*/
+
+	if (game_time < 30) {
+		glutPostRedisplay();
+		glutTimerFunc(1000, Timefunc_gameend, 1);
+	}
+	
 }
 
 void crush() {
