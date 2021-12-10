@@ -174,6 +174,8 @@ void Display()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
 
 	glBindVertexArray(Hexa_VAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture_ground);
 	glDrawArrays(GL_TRIANGLES, 0, hexadragon);	
 	
 	//³ª¹«_1

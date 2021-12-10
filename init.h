@@ -379,7 +379,7 @@ GLubyte* LoadDIBitmap(const char* filename, BITMAPINFO** info)
 	return bits;
 }
 
-unsigned int tex_head, tex_arm_l, tex_arm_r, tex_leg_l, tex_leg_r, texture_2d;
+unsigned int tex_head, tex_arm_l, tex_arm_r, tex_leg_l, tex_leg_r, texture_2d, texture_ground;
 BITMAPINFO* bmp;
 
 void InitTexture()
@@ -416,6 +416,27 @@ void InitTexture()
 	// 텍스처 로드 및 생성
 	//int width, height, nrChannels;
 	data = stbi_load("tobby.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	glGenTextures(1, &texture_ground);
+	glBindTexture(GL_TEXTURE_2D, texture_ground);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("b.bmp", &width, &height, &nrChannels, 0);
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -474,7 +495,7 @@ void InitBuffer()
 {
 	//바닥
 	glGenVertexArrays(1, &Hexa_VAO);
-	glGenBuffers(2, Hexa_VBO);
+	glGenBuffers(3, Hexa_VBO);
 
 	hexadragon = h.loadObj_normalize_center("c.obj");
 
