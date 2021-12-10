@@ -282,6 +282,12 @@ void InitBuffer()
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
 
+	glBindBuffer(GL_ARRAY_BUFFER, Hexa_VBO[2]);
+	glBufferData(GL_ARRAY_BUFFER, h.outvertex.size() * sizeof(glm::vec2), &h.outuv[0], GL_STATIC_DRAW);
+	GLint tAttribute = glGetAttribLocation(s_program, "vTexCoord");
+	glVertexAttribPointer(tAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0); //--- ÅØ½ºÃ³ ÁÂÇ¥ ¼Ó¼º
+	glEnableVertexAttribArray(tAttribute);
+
 	//³ª¹«_1
 	glGenVertexArrays(1, &Tree_1_VAO);
 	glGenBuffers(2, Tree_1_VBO);
@@ -327,7 +333,7 @@ void InitBuffer()
 	//ÇÃ·¹ÀÌ¾î
 	//¸ö
 	glGenVertexArrays(1, &head_VAO);
-	glGenBuffers(2, head_VBO);
+	glGenBuffers(3, head_VBO);
 
 	hb = headbody.loadObj_normalize_center("headbody_f.obj");
 
@@ -340,16 +346,16 @@ void InitBuffer()
 	glEnableVertexAttribArray(pAttribute);
 
 	glBindBuffer(GL_ARRAY_BUFFER, head_VBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, headbody.outvertex.size() * sizeof(glm::vec3), &headbody.outnormal[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, headbody.outnormal.size() * sizeof(glm::vec3), &headbody.outnormal[0], GL_STATIC_DRAW);
 	nAttribute = glGetAttribLocation(s_program, "aNormal");
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
 
 	glBindBuffer(GL_ARRAY_BUFFER, head_VBO[2]);
-	glBufferData(GL_ARRAY_BUFFER, headbody.outvertex.size() * sizeof(glm::vec2), &headbody.outuv[0], GL_STATIC_DRAW);
-	GLint tAttribute1 = glGetAttribLocation(s_program, "vTexCoord");
-	glVertexAttribPointer(tAttribute1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0); //--- ÅØ½ºÃ³ ÁÂÇ¥ ¼Ó¼º
-	glEnableVertexAttribArray(tAttribute1);
+	glBufferData(GL_ARRAY_BUFFER, headbody.outuv.size() * sizeof(glm::vec2), &headbody.outuv[0], GL_STATIC_DRAW);
+	tAttribute = glGetAttribLocation(s_program, "vTexCoord");
+	glVertexAttribPointer(tAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0); //--- ÅØ½ºÃ³ ÁÂÇ¥ ¼Ó¼º
+	glEnableVertexAttribArray(tAttribute);
 
 	//ÆÈ_¿Þ
 	glGenVertexArrays(1, &arm_l_VAO);

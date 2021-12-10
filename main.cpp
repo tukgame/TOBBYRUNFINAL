@@ -104,6 +104,8 @@ void Display()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R));
 
 	glBindVertexArray(head_VAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, tex_head);
 	glDrawArrays(GL_TRIANGLES, 0, hb);
 
 	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
@@ -117,8 +119,6 @@ void Display()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
 
 	glBindVertexArray(arm_l_VAO);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex_head);
 	glDrawArrays(GL_TRIANGLES, 0, a_l);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.15f, 0.15f));
