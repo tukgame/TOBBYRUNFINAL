@@ -1,3 +1,4 @@
+using namespace std;
 
 GLuint g_window_w = 800;
 GLuint g_window_h = 800;
@@ -193,6 +194,139 @@ float N[] = {
 	0.0f, 1.0f, 0.0f
 };
 
+GLuint ShaderID;
+//const GLchar* vertexsource, * fragmentsource; // 소스코드 저장 변수
+GLuint vertexShader, fragmentShader; // 세이더 객체
+GLuint vao, vao2, vao3, vao4, vbo[3], vbo2[3], vbo3[3], vbo4[3];
+void Keyboard(unsigned char key, int x, int y);
+
+GLenum mod = GL_TRIANGLES;
+
+GLfloat geoTriTexture[3][3] = {
+	{0.5, 1.0}, {0.0, 0.0}, {1.0,0.0}
+};
+
+GLfloat BRec[6][3] = { // 사각형 위치 값
+	{-1.0,-1.0,0.0},{1.0,-1.0,0.0},{1.0,1.0,0.0},{1.0,1.0,0.0},{-1.0,1.0,0.0},{-1.0,-1.0,0.0}
+};
+GLfloat Breccol[6][3] = { // 사각형 꼭짓점 색상
+{ 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 } };
+GLfloat sixTexture[6][2] = {
+	 {0.0,0.0}, {1.0, 0.0}, {1.0, 1.0}, {1.0, 1.0}, {0.0, 1.0}, {0.0,0.0}
+};
+
+
+int click = 0;
+
+const char* filetobuf(const char* file)
+{
+	FILE* fptr;
+	char* buf;
+	long length;
+
+	fptr = fopen(file, "rb"); // Open file for reading
+	if (!fptr) { // Return NULL on failure
+		return NULL;
+	}
+	fseek(fptr, 0, SEEK_END); // Seek to the end of the file
+	length = ftell(fptr); // Find out how many bytes into the file we are
+	buf = (char*)malloc(length + 1); // Allocate a buffer for the entire length of the file and a null terminator
+	fseek(fptr, 0, SEEK_SET); // Go back to the beginning of the file
+	fread(buf, length, 1, fptr); // Read the contents of the file in to the buffer
+	fclose(fptr); // Close the file
+	buf[length] = NULL; // Null terminator
+	return buf; // Return the buffer
+}
+
+void make_vertexShaders()
+{
+	vertexsource = filetobuf("vertex2.glsl");
+	//vertexsource = filetobuf("v1.glsl");
+	//--- 버텍스 세이더 객체 만들기
+	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	//--- 세이더 코드를 세이더 객체에 넣기
+	glShaderSource(vertexShader, 1, (const GLchar**)&vertexsource, 0);
+	//--- 버텍스 세이더 컴파일하기
+	glCompileShader(vertexShader);
+	//--- 컴파일이 제대로 되지 않은 경우: 에러 체크
+	GLint result;
+	GLchar errorLog[512];
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &result);
+	if (!result)
+	{
+		glGetShaderInfoLog(vertexShader, 512, NULL, errorLog);
+		cerr << "ERROR: vertex shader 컴파일 실패\n" << errorLog << endl;
+		//return false;
+	}
+}
+
+void make_fragmentShaders()
+{
+	fragmentsource = filetobuf("fragment2.glsl");
+	//fragmentsource = filetobuf("F1.glfs");
+	//--- 프래그먼트 세이더 객체 만들기
+	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	//--- 세이더 코드를 세이더 객체에 넣기
+	glShaderSource(fragmentShader, 1, (const GLchar**)&fragmentsource, NULL);
+	//--- 프래그먼트 세이더 컴파일
+	glCompileShader(fragmentShader);
+	//--- 컴파일이 제대로 되지 않은 경우: 컴파일 에러 체크
+	GLint result;
+	GLchar errorLog[512];
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &result);
+	if (!result)
+	{
+		glGetShaderInfoLog(fragmentShader, 512, NULL, errorLog);
+		cerr << "ERROR: fragment shader 컴파일 실패\n" << errorLog << endl;
+		//return false;
+	}
+}
+
+
+void InitBuffermenu() {
+	glGenVertexArrays(1, &vao4); //--- VAO 를 지정하고 할당하기
+	glBindVertexArray(vao4);
+	glGenBuffers(3, vbo4);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo4[0]);
+	glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), BRec, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo4[1]);
+	glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), Breccol, GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo4[2]);
+	glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(GLfloat), sixTexture, GL_STATIC_DRAW);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+	glEnableVertexAttribArray(2);
+}
+GLuint s_program2;
+
+GLuint InitShader2()
+{
+	GLint result;
+	GLchar errorLog[512];
+	make_vertexShaders();
+	make_fragmentShaders();
+	//-- shader Program
+	s_program2 = glCreateProgram();
+	glAttachShader(s_program2, vertexShader);
+	glAttachShader(s_program2, fragmentShader);
+	glLinkProgram(s_program2);
+	glGetProgramiv(s_program2, GL_LINK_STATUS, &result);
+	if (!result) {
+		glGetProgramInfoLog(s_program2, 512, NULL, errorLog);
+		cerr << "ERROR: shader program 연결 실패\n" << errorLog << endl;
+		//return false;
+	}
+	//--- 세이더 삭제하기
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+	//--- Shader Program 사용하기
+	glUseProgram(s_program2);
+	return s_program2;
+}
+
 GLubyte* LoadDIBitmap(const char* filename, BITMAPINFO** info)
 {
 	FILE* fp;
@@ -247,7 +381,7 @@ GLubyte* LoadDIBitmap(const char* filename, BITMAPINFO** info)
 	return bits;
 }
 
-unsigned int tex_head, tex_arm_l, tex_arm_r, tex_leg_l, tex_leg_r;
+unsigned int tex_head, tex_arm_l, tex_arm_r, tex_leg_l, tex_leg_r, texture_2d;
 BITMAPINFO* bmp;
 
 void InitTexture()
@@ -262,6 +396,28 @@ void InitTexture()
 	// 텍스처 로드 및 생성
 	int width, height, nrChannels;
 	unsigned char* data = stbi_load("headbody_UV_color.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+
+	glGenTextures(1, &texture_2d);
+	glBindTexture(GL_TEXTURE_2D, texture_2d);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("tobby.bmp", &width, &height, &nrChannels, 0);
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);

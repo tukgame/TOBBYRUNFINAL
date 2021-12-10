@@ -16,7 +16,6 @@
 
 using namespace std;
 
-
 void Display();
 void Keyboard(unsigned char key, int x, int y);
 void Timefunc(int value);
@@ -30,6 +29,7 @@ int n_value = 0;
 int m_value = 0;
 int heart = 0;
 int move_point = 1;
+int menu_point = 0;
 
 int main(int argc, char** argv)
 {
@@ -50,14 +50,16 @@ int main(int argc, char** argv)
 	}
 	//add
 	Initshader();
+	InitShader2();
 
 	InitTexture();
 
 	InitBuffer();
+	InitBuffermenu();
 	set();
 	glutDisplayFunc(Display);
 	glutReshapeFunc(Reshape);
-	glutTimerFunc(10, Timefunc, 1);
+	//glutTimerFunc(10, Timefunc, 1);
 	glutKeyboardFunc(Keyboard);
 	glutMainLoop();
 
@@ -222,6 +224,13 @@ void Display()
 		}
 	}
 
+	glUseProgram(s_program2);
+	if (menu_point == 0) {
+		glBindVertexArray(vao4);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture_2d);
+		glDrawArrays(mod, 0, 9);
+	}
 	glutSwapBuffers();
 
 }
@@ -232,6 +241,12 @@ int roofa_10 = 0;
 void Keyboard(unsigned char key, int x, int y)
 {
 	switch (key) {
+	case 'g': { //뒤에서보기
+		menu_point++;
+		glutTimerFunc(10, Timefunc, 1);
+		glutTimerFunc(10, Timefunc4, 1);
+		break;
+	}
 	case '1': { //낮
 		sky_r = 0.4f;
 		sky_g = 0.6f;
@@ -294,10 +309,6 @@ void Keyboard(unsigned char key, int x, int y)
 		}
 		break;
 	}
-	case '+': {
-		glutTimerFunc(10, Timefunc4, 1);
-		break;
-	}
 	case 'q': {
 		exit(EXIT_FAILURE);
 		break;
@@ -305,6 +316,8 @@ void Keyboard(unsigned char key, int x, int y)
 	}
 	glutPostRedisplay();
 }
+
+
 int move_value = 1;
 void Timefunc(int value) {
 	if (move_value == 0) {
@@ -382,18 +395,20 @@ void Timefunc3(int value) {
 int leg_r_ck = 0;
 
 void Timefunc4(int value) {
-	if (leg_r_ck == 0) {
-		a -= 0.1f;
-	}
-	else {
-		a += 0.1f;
-	}
+	if (move_value != 0) {
+		if (leg_r_ck == 0) {
+			a -= 0.1f;
+		}
+		else {
+			a += 0.1f;
+		}
 
-	if (a < -15.0f) {
-		leg_r_ck = 1;
-	}
-	else if (a > 15.0f) {
-		leg_r_ck = 0;
+		if (a < -15.0f) {
+			leg_r_ck = 1;
+		}
+		else if (a > 15.0f) {
+			leg_r_ck = 0;
+		}
 	}
 
 	glutPostRedisplay();

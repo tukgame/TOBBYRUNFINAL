@@ -15,13 +15,13 @@ uniform sampler2D texture1;
 
 void main(void) 
 {
-   float ambientLight = 0.3;
+   float ambientLight = 0.5;
    vec3 ambient = ambientLight * lightColor;
 
    vec3 norm = normalize(Normal);
    vec3 light = normalize(lightDir);
    float diffuseLight = max(dot(Normal, light), 0.0);
-   float d = 2.0f;
+   float d = 0.5f;
    vec3 diffuse = d * diffuseLight * lightColor;
 
    int shininess = 128;
