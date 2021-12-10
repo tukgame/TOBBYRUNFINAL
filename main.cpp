@@ -22,10 +22,14 @@ void Timefunc(int value);
 void Timefunc2(int value);
 void Timefunc3(int value);
 void Timefunc4(int value);
+void TimerJump(int value);
 void Timefunc_gameend(int value);
 void crush();
 
-float rotate4die = 0.0f;
+int j_value = 0;
+float move_y = 0;
+int j_d = 0;
+float rotate4die = 180.0f;
 int n_value = 0;
 int m_value = 0;
 int heart = 0;
@@ -104,11 +108,10 @@ void Display()
 
 	//플레이어 몸통
 	S = glm::scale(model, glm::vec3(0.4f, 0.45f, 0.5f));
-	T = glm::translate(model, glm::vec3(0.0f + exmove, -0.11f, 4.0f));
-	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	Rfordie = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 0.0f, 1.0f));
+	T = glm::translate(model, glm::vec3(0.0f + exmove, -0.11f + move_y, 4.0f));
+	R = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 1.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T  * Rfordie * S * R));
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R));
 
 	glBindVertexArray(head_VAO);
 	glActiveTexture(GL_TEXTURE0);
@@ -119,23 +122,21 @@ void Display()
 	glUniform3f(outColorLocation, 1.0f, 0.0f, 0.0f);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.15f, 0.15f));
-	T = glm::translate(model, glm::vec3(-0.18f + exmove, -0.31f, 4.0f));
-	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	Rfordie = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 0.0f, 1.0f));
+	T = glm::translate(model, glm::vec3(-0.18f + exmove, -0.31f + move_y, 4.0f));
+	R = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 1.0f, 0.0f));
 	TRS = glm::rotate(model, glm::radians(-a), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * Rfordie * S * R * TRS));
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
 
 	glBindVertexArray(arm_l_VAO);
 	glDrawArrays(GL_TRIANGLES, 0, a_l);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.15f, 0.15f));
-	T = glm::translate(model, glm::vec3(0.18f + exmove, -0.31f, 4.0f));
-	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	Rfordie = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 0.0f, 1.0f));
+	T = glm::translate(model, glm::vec3(0.18f + exmove, -0.31f + move_y, 4.0f));
+	R = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 1.0f, 0.0f));
 	TRS = glm::rotate(model, glm::radians(a), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * Rfordie * S * R * TRS));
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
 
 	glBindVertexArray(arm_r_VAO);
 	glDrawArrays(GL_TRIANGLES, 0, a_r);
@@ -144,23 +145,21 @@ void Display()
 	glUniform3f(outColorLocation, 0.0f, 0.0f, 1.0f);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.25f, 0.23f));
-	T = glm::translate(model, glm::vec3(-0.07f + exmove, -0.5f, 4.0f));
-	Rfordie = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 0.0f, 1.0f));
-	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	T = glm::translate(model, glm::vec3(-0.07f + exmove, -0.5f + move_y, 4.0f));
+	R = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 1.0f, 0.0f));
 	TRS = glm::rotate(model, glm::radians(-a), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T  * Rfordie * S * R * TRS));
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
 
 	glBindVertexArray(leg_l_VAO);
 	glDrawArrays(GL_TRIANGLES, 0, l_l);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.25f, 0.23f));
-	T = glm::translate(model, glm::vec3(0.07f + exmove, -0.5f, 4.0f));
-	Rfordie = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 0.0f, 1.0f));
-	R = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	T = glm::translate(model, glm::vec3(0.07f + exmove, -0.5f + move_y, 4.0f));
+	R = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 1.0f, 0.0f));
 	TRS = glm::rotate(model, glm::radians(a), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T  * Rfordie * S * R * TRS));
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
 
 	glBindVertexArray(leg_r_VAO);
 	glDrawArrays(GL_TRIANGLES, 0, l_r);
@@ -309,6 +308,11 @@ void Keyboard(unsigned char key, int x, int y)
 			//exmove = exmove + 1.0f;
 			glutTimerFunc(10, Timefunc2, 1);
 		}
+		break;
+	}
+	case 'j': {
+		j_value = 1;
+		glutTimerFunc(50, TimerJump, 1);
 		break;
 	}
 	case 'q': {
@@ -460,15 +464,9 @@ void Timefunc_gameend(int value) {
 	light_g -= 0.03f;
 	light_b -= 0.03f;
 
-	/*if (game_time == 15) {
-		sky_r = 0.0f;
-		sky_g = 0.0f;
-		sky_b = 0.1f;
-
-		light_r = 0.5f;
-		light_g = 0.5f;
-		light_b = 0.5f;
-	}*/
+	if (game_time > 30) {
+		
+	}
 
 	if (game_time < 30) {
 		glutPostRedisplay();
@@ -479,12 +477,12 @@ void Timefunc_gameend(int value) {
 
 void crush() {
 	for (int i = 0; i < 5; i++) {
-		if (obs_l[i].o_z >= 3.95f && obs_l[i].o_z <= 4.05f && obs_l[i].show == 1) {
+		if (obs_l[i].o_z >= 3.95f && obs_l[i].o_z <= 4.05f && obs_l[i].show == 1 && j_d == 0) {
 			if (exmove <= -1.0f) {
 				if (heart == 1) {
 					obs_l[i].o_z -= 0.3f;
 					move_value = 0;
-					rotate4die = 90.0f;
+					//rotate4die += 180.0f;
 					glutPostRedisplay();
 					return;
 				}
@@ -502,11 +500,11 @@ void crush() {
 				}
 			}
 		}
-		if (obs_r[i].o_z >= 3.95f && obs_r[i].o_z <= 4.05f && obs_r[i].show == 1) {
+		if (obs_r[i].o_z >= 3.95f && obs_r[i].o_z <= 4.05f && obs_r[i].show == 1 && j_d == 0) {
 			if (exmove >= 1.0f) {
 				if (heart == 1) {
 					obs_r[i].o_z -= 0.3f;
-					rotate4die = 90.0f;
+					//rotate4die += 180.0f;
 					move_value = 0;
 					glutPostRedisplay();
 					return;
@@ -525,12 +523,12 @@ void crush() {
 				}
 			}
 		}
-		if (obs_c[i].o_z >= 3.95f && obs_c[i].o_z <= 4.05f && obs_c[i].show == 1) {
+		if (obs_c[i].o_z >= 3.95f && obs_c[i].o_z <= 4.05f && obs_c[i].show == 1 && j_d == 0) {
 			if (exmove >= -0.05f && exmove <= 0.05f) {
 				if (heart == 1) {
 					obs_c[i].o_z -= 0.3f;
 					move_value = 0;
-					rotate4die = 90.0f;
+					//rotate4die += 180.0f;
 					glutPostRedisplay();
 					return;
 				}
@@ -547,4 +545,27 @@ void crush() {
 			}
 		}
 	}
+}
+void TimerJump(int value) {
+	if (j_value == 0) {
+		return;
+	}
+	else if (j_value == 1) {
+			move_y = 0.1 * j_d;
+			j_d++;
+			if (j_d == 5) {
+				j_value = 2;
+			}
+	}
+	else if (j_value == 2) {
+			move_y = 0.1 * j_d;
+			j_d--;
+			if (j_d == 1) {
+				j_d = 0;
+				j_value = 0;
+			}
+		
+	}
+	glutPostRedisplay();
+	glutTimerFunc(50, TimerJump, 1);
 }
