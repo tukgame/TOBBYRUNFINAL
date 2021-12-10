@@ -401,6 +401,35 @@ void Timefunc4(int value) {
 	
 }
 
+int shake_time = 0;
+
+void Timefunc5(int value) {
+	if (shake_time == 0) {
+		camera_x += 0.3f;
+		shake_time++;
+		glutPostRedisplay();
+		glutTimerFunc(10, Timefunc5, 1);
+	}
+	else if (shake_time == 1) {
+		camera_x -= 0.6f;
+		shake_time++;
+		glutPostRedisplay();
+		glutTimerFunc(10, Timefunc5, 1);
+
+	}
+	else if (shake_time == 2) {
+		camera_x += 0.3f;
+		shake_time++;
+		glutPostRedisplay();
+		glutTimerFunc(10, Timefunc5, 1);
+
+	}
+	else if (shake_time == 3) {
+		shake_time = 0;
+	}
+
+}
+
 void crush() {
 	for (int i = 0; i < 5; i++) {
 		if (obs_l[i].o_z >= 3.95f && obs_l[i].o_z <= 4.05f && obs_l[i].show == 1) {
@@ -420,6 +449,7 @@ void crush() {
 						glutTimerFunc(1, Timefunc2, 1);
 					}
 					cout << "heart = 1" << endl;
+					glutTimerFunc(10, Timefunc5, 1);
 					heart = 1;
 					return;
 				}
@@ -442,13 +472,14 @@ void crush() {
 						glutTimerFunc(1, Timefunc3, 1);
 					}
 					cout << "heart = 1" << endl;
+					glutTimerFunc(10, Timefunc5, 1);
 					heart = 1;
 					return;
 				}
 			}
 		}
-		if (obs_c[i].o_z >= 3.95f && obs_l[i].o_z <= 4.05f && obs_c[i].show == 1) {
-			if (exmove >= -0.1f && exmove <= 0.1f) {
+		if (obs_c[i].o_z >= 3.95f && obs_c[i].o_z <= 4.05f && obs_c[i].show == 1) {
+			if (exmove >= -0.05f && exmove <= 0.05f) {
 				if (heart == 1) {
 					obs_c[i].o_z -= 0.3f;
 					move_value = 0;
@@ -462,6 +493,7 @@ void crush() {
 					//exmove = exmove + 1.0f;
 					glutTimerFunc(10, Timefunc2, 1);
 					cout << "heart = 1" << endl;
+					glutTimerFunc(10, Timefunc5, 1);
 					heart = 1;
 					return;
 				}
