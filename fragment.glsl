@@ -3,12 +3,15 @@
 in vec3 FragPos; //--- 위치값
 in vec3 Normal; //--- 버텍스 세이더에서 받은 노멀값
 in vec3 lightDir;
+in vec2 TexCoord;
 
 out vec4 FragColor; //--- 색상 출력
 
 uniform vec3 Out_Color;
 uniform vec3 lightColor; //--- 조명의 색
 uniform vec3 viewPos;
+
+uniform sampler2D texture1;
 
 void main(void) 
 {
@@ -31,4 +34,6 @@ void main(void)
    vec3 result = (ambient + diffuse) * Out_Color;
 
    FragColor = vec4(result, 1.0f);
+
+   FragColor = texture(texture1, TexCoord) * FragColor;
 }

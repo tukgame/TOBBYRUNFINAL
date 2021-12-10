@@ -1,35 +1,36 @@
+
 GLuint g_window_w = 800;
 GLuint g_window_h = 800;
 
 GLuint Hexa_VAO;
-GLuint Hexa_VBO[2];
+GLuint Hexa_VBO[3];
 
 //나무
 GLuint Tree_1_VAO;
-GLuint Tree_1_VBO[2];
+GLuint Tree_1_VBO[3];
 GLuint Tree_2_VAO;
-GLuint Tree_2_VBO[2];
+GLuint Tree_2_VBO[3];
 
 //철수
 GLuint head_VAO;
-GLuint head_VBO[2];
+GLuint head_VBO[3];
 GLuint arm_l_VAO;
-GLuint arm_l_VBO[2];
+GLuint arm_l_VBO[3];
 GLuint arm_r_VAO;
-GLuint arm_r_VBO[2];
+GLuint arm_r_VBO[3];
 GLuint leg_l_VAO;
-GLuint leg_l_VBO[2];
+GLuint leg_l_VBO[3];
 GLuint leg_r_VAO;
-GLuint leg_r_VBO[2];
+GLuint leg_r_VBO[3];
 
 //장애물
 GLuint trash_VAO;
-GLuint trash_VBO[2];
+GLuint trash_VBO[3];
 GLuint oak_VAO;
-GLuint oak_VBO[2];
+GLuint oak_VBO[3];
 
 GLuint LINE_VAO;
-GLuint LINE_VBO[2];
+GLuint LINE_VBO[3];
 
 objReader h;
 objReader t_1;
@@ -190,7 +191,74 @@ GLubyte* LoadDIBitmap(const char* filename, BITMAPINFO** info)
 	return bits;
 }
 
+unsigned int tex_head, tex_arm_l, tex_arm_r, tex_leg_l, tex_leg_r;
+BITMAPINFO* bmp;
 
+void InitTexture()
+{
+	glGenTextures(1, &tex_head);
+	glBindTexture(GL_TEXTURE_2D, tex_head);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	int width, height, nrChannels;
+	unsigned char* data = stbi_load("headbody_UV_color.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	//glGenTextures(1, &texture1);
+	//glBindTexture(GL_TEXTURE_2D, texture1);
+	//// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//// 텍스처 로드 및 생성
+	////int width, height, nrChannels;
+	//data = stbi_load("aa.bmp", &width, &height, &nrChannels, 0);
+	//if (data)
+	//{
+	//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	//	glGenerateMipmap(GL_TEXTURE_2D);
+	//}
+	//else
+	//{
+	//	std::cout << "Failed to load texture" << std::endl;
+	//}
+	//stbi_image_free(data);
+
+	//glGenTextures(1, &texture2);
+	//glBindTexture(GL_TEXTURE_2D, texture2);
+	//// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//// 텍스처 로드 및 생성
+	////int width, height, nrChannels;
+	//data = stbi_load("sky.bmp", &width, &height, &nrChannels, 0);
+	//if (data)
+	//{
+	//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	//	glGenerateMipmap(GL_TEXTURE_2D);
+	//}
+	//else
+	//{
+	//	std::cout << "Failed to load texture" << std::endl;
+	//}
+	//stbi_image_free(data);
+}
 
 void InitBuffer()
 {
@@ -276,6 +344,12 @@ void InitBuffer()
 	nAttribute = glGetAttribLocation(s_program, "aNormal");
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
+
+	glBindBuffer(GL_ARRAY_BUFFER, head_VBO[2]);
+	glBufferData(GL_ARRAY_BUFFER, headbody.outvertex.size() * sizeof(glm::vec2), &headbody.outuv[0], GL_STATIC_DRAW);
+	GLint tAttribute1 = glGetAttribLocation(s_program, "vTexCoord");
+	glVertexAttribPointer(tAttribute1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0); //--- 텍스처 좌표 속성
+	glEnableVertexAttribArray(tAttribute1);
 
 	//팔_왼
 	glGenVertexArrays(1, &arm_l_VAO);
