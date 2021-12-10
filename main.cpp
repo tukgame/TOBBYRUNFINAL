@@ -180,6 +180,15 @@ void Display()
 		glBindVertexArray(t[i].VAO);
 		glDrawArrays(GL_TRIANGLES, 0, t[i].tree);
 	}
+	for (int i = 0; i < 5; i++) {
+		S = glm::scale(model, glm::vec3(0.7f, 1.0f, 0.7f));
+		T = glm::translate(model, glm::vec3(obs_l[i].o_x, 0.3f, obs_l[i].o_z));
+		modelLocation = glGetUniformLocation(s_program, "model");
+		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
+
+		glBindVertexArray(obs_l[i].VAO);
+		glDrawArrays(GL_TRIANGLES, 0, obs_l[i].obstacle);
+	}
 
 	glutSwapBuffers();
 
@@ -223,19 +232,19 @@ void Keyboard(unsigned char key, int x, int y)
 		camera_z = 2.0f;
 		break;
 	}
-	case 'B': { //뒤에서보기
+	case 'B': {
 		camera_x = 0.0f;
 		camera_y = 0.0f;
 		camera_z = 4.0f;
 		break;
 	}
-	case 'U': { //뒤에서보기
+	case 'U': {
 		camera_x = 8.0f;
 		camera_y = 0.0f;
 		camera_z = 0.0f;
 		break;
 	}
-	case 'a': { //뒤에서보기
+	case 'a': {
 		if (move_point != 0) {
 			move_point--;
 			roofa_10 = 0;
@@ -244,7 +253,7 @@ void Keyboard(unsigned char key, int x, int y)
 		}
 		break;
 	}
-	case 'd': { //뒤에서보기
+	case 'd': {
 		if (move_point != 2) {
 			move_point++;
 			roofd_10 = 0;
@@ -253,7 +262,7 @@ void Keyboard(unsigned char key, int x, int y)
 		}
 		break;
 	}
-	case '+': { //뒤에서보기
+	case '+': {
 		glutTimerFunc(10, Timefunc4, 1);
 		break;
 	}

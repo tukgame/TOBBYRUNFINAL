@@ -89,8 +89,17 @@ struct trees {
 	int tree;
 	GLuint VAO;
 };
+struct obstacles {
+	float o_x;
+	float o_z;
+	int obstacle;
+	GLuint VAO;
+};
 
 trees t[10];
+obstacles obs_l[5];
+obstacles obs_c[5];
+obstacles obs_r[5];
 
 void set() {
 	int i = 0;
@@ -121,6 +130,45 @@ void set() {
 		else {
 			t[i].tree = tree_2;
 			t[i].VAO = Tree_2_VAO;
+		}
+	}
+	for (i; i < 5; i++) {
+		obs_l[i].o_x = -1.0f;
+		obs_l[i].o_z = -4.0f + (i * 2.0f);
+		j = rand() % 2;
+		if (j == 0) {
+			obs_l[i].obstacle = o;
+			obs_l[i].VAO = oak_VAO;
+		}
+		else {
+			obs_l[i].obstacle = tra;
+			obs_l[i].VAO = trash_VAO;
+		}
+	}
+	for (i; i < 5; i++) {
+		obs_c[i].o_x = -1.0f;
+		obs_c[i].o_z = -4.0f + (i * 2.0f);
+		j = rand() % 2;
+		if (j == 0) {
+			obs_c[i].obstacle = o;
+			obs_c[i].VAO = oak_VAO;
+		}
+		else {
+			obs_c[i].obstacle = tra;
+			obs_c[i].VAO = trash_VAO;
+		}
+	}
+	for (i; i < 5; i++) {
+		obs_c[i].o_x = -1.0f;
+		obs_c[i].o_z = -4.0f + (i * 2.0f);
+		j = rand() % 2;
+		if (j == 0) {
+			obs_c[i].obstacle = o;
+			obs_c[i].VAO = oak_VAO;
+		}
+		else {
+			obs_c[i].obstacle = tra;
+			obs_c[i].VAO = trash_VAO;
 		}
 	}
 }
@@ -435,6 +483,45 @@ void InitBuffer()
 
 	glBindBuffer(GL_ARRAY_BUFFER, leg_r_VBO[1]);
 	glBufferData(GL_ARRAY_BUFFER, leg_r.outvertex.size() * sizeof(glm::vec3), &leg_r.outnormal[0], GL_STATIC_DRAW);
+	nAttribute = glGetAttribLocation(s_program, "aNormal");
+	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(nAttribute);
+
+
+	glGenVertexArrays(1, &oak_VAO);
+	glGenBuffers(2, oak_VBO);
+
+	o = oak.loadObj_normalize_center("oak.obj");
+
+	glUseProgram(s_program);
+	glBindVertexArray(oak_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, oak_VBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, oak.outvertex.size() * sizeof(glm::vec3), &oak.outvertex[0], GL_STATIC_DRAW);
+	pAttribute = glGetAttribLocation(s_program, "aPos");
+	glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(pAttribute);
+
+	glBindBuffer(GL_ARRAY_BUFFER, oak_VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, oak.outvertex.size() * sizeof(glm::vec3), &oak.outnormal[0], GL_STATIC_DRAW);
+	nAttribute = glGetAttribLocation(s_program, "aNormal");
+	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(nAttribute);
+
+	glGenVertexArrays(1, &trash_VAO);
+	glGenBuffers(2, trash_VBO);
+
+	tra = trash.loadObj_normalize_center("oak.obj");
+
+	glUseProgram(s_program);
+	glBindVertexArray(trash_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, trash_VBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, trash.outvertex.size() * sizeof(glm::vec3), &trash.outvertex[0], GL_STATIC_DRAW);
+	pAttribute = glGetAttribLocation(s_program, "aPos");
+	glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(pAttribute);
+
+	glBindBuffer(GL_ARRAY_BUFFER, trash_VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, trash.outvertex.size() * sizeof(glm::vec3), &trash.outnormal[0], GL_STATIC_DRAW);
 	nAttribute = glGetAttribLocation(s_program, "aNormal");
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
