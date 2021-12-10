@@ -11,7 +11,9 @@
 #include "shader.h"
 #include "objReader.h"
 #include "init.h"
+#include "stb_image.h"
 using namespace std;
+
 
 void Display();
 void Keyboard(unsigned char key, int x, int y);
