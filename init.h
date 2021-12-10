@@ -25,9 +25,9 @@ GLuint leg_r_VBO[3];
 
 //Àå¾Ö¹°
 GLuint trash_VAO;
-GLuint trash_VBO[3];
+GLuint trash_VBO[2];
 GLuint oak_VAO;
-GLuint oak_VBO[3];
+GLuint oak_VBO[2];
 
 GLuint LINE_VAO;
 GLuint LINE_VBO[3];
@@ -90,6 +90,7 @@ struct trees {
 	GLuint VAO;
 };
 struct obstacles {
+	int show;
 	float o_x;
 	float o_z;
 	int obstacle;
@@ -132,6 +133,7 @@ void set() {
 			t[i].VAO = Tree_2_VAO;
 		}
 	}
+	i = 0;
 	for (i; i < 5; i++) {
 		obs_l[i].o_x = -1.0f;
 		obs_l[i].o_z = -4.0f + (i * 2.0f);
@@ -144,7 +146,12 @@ void set() {
 			obs_l[i].obstacle = tra;
 			obs_l[i].VAO = trash_VAO;
 		}
+		obs_l[i].show = rand() % 2;
+		if (obs_c[i].show == 1 || obs_r[i].show == 1) {
+			obs_l[i].show = 0;
+		}
 	}
+	i = 0;
 	for (i; i < 5; i++) {
 		obs_c[i].o_x = 0.0f;
 		obs_c[i].o_z = -4.0f + (i * 2.0f);
@@ -157,7 +164,12 @@ void set() {
 			obs_c[i].obstacle = tra;
 			obs_c[i].VAO = trash_VAO;
 		}
+		obs_c[i].show = rand() % 2;
+		if (obs_l[i].show == 1 || obs_r[i].show == 1) {
+			obs_c[i].show = 0;
+		}
 	}
+	i = 0;
 	for (i; i < 5; i++) {
 		obs_r[i].o_x = 1.0f;
 		obs_r[i].o_z = -4.0f + (i * 2.0f);
@@ -167,8 +179,12 @@ void set() {
 			obs_r[i].VAO = oak_VAO;
 		}
 		else {
-			obs_c[i].obstacle = tra;
-			obs_c[i].VAO = trash_VAO;
+			obs_r[i].obstacle = tra;
+			obs_r[i].VAO = trash_VAO;
+		}
+		obs_r[i].show = rand() % 2;
+		if (obs_l[i].show == 1 || obs_c[i].show == 1) {
+			obs_r[i].show = 0;
 		}
 	}
 }

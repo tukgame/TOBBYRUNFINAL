@@ -181,13 +181,37 @@ void Display()
 		glDrawArrays(GL_TRIANGLES, 0, t[i].tree);
 	}
 	for (int i = 0; i < 5; i++) {
-		S = glm::scale(model, glm::vec3(0.7f, 1.0f, 0.7f));
-		T = glm::translate(model, glm::vec3(obs_c[i].o_x, 0.3f, obs_c[i].o_z));
-		modelLocation = glGetUniformLocation(s_program, "model");
-		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
+		if (obs_l[i].show == 1) {
+			S = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+			T = glm::translate(model, glm::vec3(obs_l[i].o_x, -0.4f, obs_l[i].o_z));
+			modelLocation = glGetUniformLocation(s_program, "model");
+			glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
 
-		glBindVertexArray(obs_c[i].VAO);
-		glDrawArrays(GL_TRIANGLES, 0, obs_c[i].obstacle);
+			glBindVertexArray(obs_l[i].VAO);
+			glDrawArrays(GL_TRIANGLES, 0, obs_l[i].obstacle);
+		}
+	}
+	for (int i = 0; i < 5; i++) {
+		if (obs_c[i].show == 1) {
+			S = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+			T = glm::translate(model, glm::vec3(obs_c[i].o_x, -0.4f, obs_c[i].o_z));
+			modelLocation = glGetUniformLocation(s_program, "model");
+			glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
+
+			glBindVertexArray(obs_c[i].VAO);
+			glDrawArrays(GL_TRIANGLES, 0, obs_c[i].obstacle);
+		}
+	}
+	for (int i = 0; i < 5; i++) {
+		if (obs_r[i].show == 1) {
+			S = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+			T = glm::translate(model, glm::vec3(obs_r[i].o_x, -0.4f, obs_r[i].o_z));
+			modelLocation = glGetUniformLocation(s_program, "model");
+			glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
+
+			glBindVertexArray(obs_r[i].VAO);
+			glDrawArrays(GL_TRIANGLES, 0, obs_r[i].obstacle);
+		}
 	}
 
 	glutSwapBuffers();
@@ -282,6 +306,36 @@ void Timefunc(int value) {
 		t[i].t_z += 0.05f;
 		
 	}
+	for (int i = 0; i < 5; ++i) {
+		if (obs_l[i].o_z >= 6.0f) {
+			obs_l[i].o_z = -4.0f;
+			obs_l[i].show = rand() % 2;
+			if (obs_c[i].show == 1 || obs_r[i].show == 1) {
+				obs_l[i].show = 0;
+			}
+		}
+		obs_l[i].o_z += 0.05f;
+	}
+	for (int i = 0; i < 5; ++i) {
+		if (obs_c[i].o_z >= 6.0f) {
+			obs_c[i].o_z = -4.0f;
+			obs_c[i].show = rand() % 2;
+			if (obs_l[i].show == 1 || obs_r[i].show == 1) {
+				obs_c[i].show = 0;
+			}
+		}
+		obs_c[i].o_z += 0.05f;
+	}
+	for (int i = 0; i < 5; ++i) {
+		if (obs_r[i].o_z >= 6.0f) {
+			obs_r[i].o_z = -4.0f;
+			obs_r[i].show = rand() % 2;
+			if (obs_c[i].show == 1 || obs_l[i].show == 1) {
+				obs_r[i].show = 0;
+			}
+		}
+		obs_r[i].o_z += 0.05f;
+	}
 	glutPostRedisplay();
 	glutTimerFunc(10, Timefunc, 1);
 }
@@ -330,4 +384,7 @@ void Timefunc4(int value) {
 	glutPostRedisplay();
 	glutTimerFunc(1, Timefunc4, 1);
 	
+}
+
+void crush() {
 }
