@@ -146,7 +146,7 @@ void set() {
 		}
 	}
 	for (i; i < 5; i++) {
-		obs_c[i].o_x = -1.0f;
+		obs_c[i].o_x = 0.0f;
 		obs_c[i].o_z = -4.0f + (i * 2.0f);
 		j = rand() % 2;
 		if (j == 0) {
@@ -159,12 +159,12 @@ void set() {
 		}
 	}
 	for (i; i < 5; i++) {
-		obs_c[i].o_x = -1.0f;
-		obs_c[i].o_z = -4.0f + (i * 2.0f);
+		obs_r[i].o_x = 1.0f;
+		obs_r[i].o_z = -4.0f + (i * 2.0f);
 		j = rand() % 2;
 		if (j == 0) {
-			obs_c[i].obstacle = o;
-			obs_c[i].VAO = oak_VAO;
+			obs_r[i].obstacle = o;
+			obs_r[i].VAO = oak_VAO;
 		}
 		else {
 			obs_c[i].obstacle = tra;
@@ -510,7 +510,7 @@ void InitBuffer()
 	glGenVertexArrays(1, &trash_VAO);
 	glGenBuffers(2, trash_VBO);
 
-	tra = trash.loadObj_normalize_center("oak.obj");
+	tra = trash.loadObj_normalize_center("trash.obj");
 
 	glUseProgram(s_program);
 	glBindVertexArray(trash_VAO);

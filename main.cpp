@@ -182,12 +182,12 @@ void Display()
 	}
 	for (int i = 0; i < 5; i++) {
 		S = glm::scale(model, glm::vec3(0.7f, 1.0f, 0.7f));
-		T = glm::translate(model, glm::vec3(obs_l[i].o_x, 0.3f, obs_l[i].o_z));
+		T = glm::translate(model, glm::vec3(obs_c[i].o_x, 0.3f, obs_c[i].o_z));
 		modelLocation = glGetUniformLocation(s_program, "model");
 		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
 
-		glBindVertexArray(obs_l[i].VAO);
-		glDrawArrays(GL_TRIANGLES, 0, obs_l[i].obstacle);
+		glBindVertexArray(obs_c[i].VAO);
+		glDrawArrays(GL_TRIANGLES, 0, obs_c[i].obstacle);
 	}
 
 	glutSwapBuffers();
