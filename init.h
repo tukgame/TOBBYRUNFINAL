@@ -26,9 +26,9 @@ GLuint leg_r_VBO[3];
 
 //장애물
 GLuint trash_VAO;
-GLuint trash_VBO[2];
+GLuint trash_VBO[3];
 GLuint oak_VAO;
-GLuint oak_VBO[2];
+GLuint oak_VBO[3];
 
 GLuint LINE_VAO;
 GLuint LINE_VBO[3];
@@ -379,7 +379,7 @@ GLubyte* LoadDIBitmap(const char* filename, BITMAPINFO** info)
 	return bits;
 }
 
-unsigned int tex_head, tex_arm_l, tex_arm_r, tex_leg_l, tex_leg_r, texture_2d, texture_ground;
+unsigned int tex_head, tex_arm_l, tex_arm_r, tex_leg_l, tex_leg_r, texture_2d, texture_ground, tex_fail, tex_suc, tex_oak, tex_trash;
 BITMAPINFO* bmp;
 
 void InitTexture()
@@ -448,47 +448,133 @@ void InitTexture()
 	}
 	stbi_image_free(data);
 
-	//glGenTextures(1, &texture1);
-	//glBindTexture(GL_TEXTURE_2D, texture1);
-	//// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//// 텍스처 로드 및 생성
-	////int width, height, nrChannels;
-	//data = stbi_load("aa.bmp", &width, &height, &nrChannels, 0);
-	//if (data)
-	//{
-	//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	//	glGenerateMipmap(GL_TEXTURE_2D);
-	//}
-	//else
-	//{
-	//	std::cout << "Failed to load texture" << std::endl;
-	//}
-	//stbi_image_free(data);
 
-	//glGenTextures(1, &texture2);
-	//glBindTexture(GL_TEXTURE_2D, texture2);
-	//// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//// 텍스처 로드 및 생성
-	////int width, height, nrChannels;
-	//data = stbi_load("sky.bmp", &width, &height, &nrChannels, 0);
-	//if (data)
-	//{
-	//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	//	glGenerateMipmap(GL_TEXTURE_2D);
-	//}
-	//else
-	//{
-	//	std::cout << "Failed to load texture" << std::endl;
-	//}
-	//stbi_image_free(data);
+	glGenTextures(1, &tex_arm_r);
+	glBindTexture(GL_TEXTURE_2D, tex_arm_r);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("arm_r_UV_color.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	glGenTextures(1, &tex_arm_l);
+	glBindTexture(GL_TEXTURE_2D, tex_arm_l);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("arm_l_UV_color.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	glGenTextures(1, &tex_leg_r);
+	glBindTexture(GL_TEXTURE_2D, tex_leg_r);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("leg_r_UV_color.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	glGenTextures(1, &tex_leg_l);
+	glBindTexture(GL_TEXTURE_2D, tex_leg_l);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("leg_l_UV_color.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+
+	glGenTextures(1, &tex_oak);
+	glBindTexture(GL_TEXTURE_2D, tex_oak);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("oak_UV_color.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	glGenTextures(1, &tex_trash);
+	glBindTexture(GL_TEXTURE_2D, tex_trash);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("trash_UV_color.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
 }
 
 void InitBuffer()
@@ -590,7 +676,7 @@ void InitBuffer()
 
 	//팔_왼
 	glGenVertexArrays(1, &arm_l_VAO);
-	glGenBuffers(2, arm_l_VBO);
+	glGenBuffers(3, arm_l_VBO);
 
 	a_l = arm_l.loadObj_normalize_center("arm_l_f.obj");
 
@@ -604,14 +690,20 @@ void InitBuffer()
 	glEnableVertexAttribArray(pAttribute);
 
 	glBindBuffer(GL_ARRAY_BUFFER, arm_l_VBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, arm_l.outvertex.size() * sizeof(glm::vec3), &arm_l.outnormal[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, arm_l.outnormal.size() * sizeof(glm::vec3), &arm_l.outnormal[0], GL_STATIC_DRAW);
 	nAttribute = glGetAttribLocation(s_program, "aNormal");
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
 
+	glBindBuffer(GL_ARRAY_BUFFER, arm_l_VBO[2]);
+	glBufferData(GL_ARRAY_BUFFER, arm_l.outuv.size() * sizeof(glm::vec2), &arm_l.outuv[0], GL_STATIC_DRAW);
+	tAttribute = glGetAttribLocation(s_program, "vTexCoord");
+	glVertexAttribPointer(tAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0); //--- 텍스처 좌표 속성
+	glEnableVertexAttribArray(tAttribute);
+
 	//팔_오
 	glGenVertexArrays(1, &arm_r_VAO);
-	glGenBuffers(2, arm_r_VBO);
+	glGenBuffers(3, arm_r_VBO);
 
 	a_r = arm_r.loadObj_normalize_center("arm_r_f.obj");
 
@@ -625,14 +717,20 @@ void InitBuffer()
 	glEnableVertexAttribArray(pAttribute);
 
 	glBindBuffer(GL_ARRAY_BUFFER, arm_r_VBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, arm_r.outvertex.size() * sizeof(glm::vec3), &arm_r.outnormal[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, arm_r.outnormal.size() * sizeof(glm::vec3), &arm_r.outnormal[0], GL_STATIC_DRAW);
 	nAttribute = glGetAttribLocation(s_program, "aNormal");
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
 
+	glBindBuffer(GL_ARRAY_BUFFER, arm_r_VBO[2]);
+	glBufferData(GL_ARRAY_BUFFER, arm_r.outuv.size() * sizeof(glm::vec2), &arm_r.outuv[0], GL_STATIC_DRAW);
+	tAttribute = glGetAttribLocation(s_program, "vTexCoord");
+	glVertexAttribPointer(tAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0); //--- 텍스처 좌표 속성
+	glEnableVertexAttribArray(tAttribute);
+
 	//다리 왼
 	glGenVertexArrays(1, &leg_l_VAO);
-	glGenBuffers(2, leg_l_VBO);
+	glGenBuffers(3, leg_l_VBO);
 
 	l_l = leg_l.loadObj_normalize_center("leg_l_f.obj");
 
@@ -645,14 +743,20 @@ void InitBuffer()
 	glEnableVertexAttribArray(pAttribute);
 
 	glBindBuffer(GL_ARRAY_BUFFER, leg_l_VBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, leg_l.outvertex.size() * sizeof(glm::vec3), &leg_l.outnormal[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, leg_l.outnormal.size() * sizeof(glm::vec3), &leg_l.outnormal[0], GL_STATIC_DRAW);
 	nAttribute = glGetAttribLocation(s_program, "aNormal");
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
 
+	glBindBuffer(GL_ARRAY_BUFFER, leg_l_VBO[2]);
+	glBufferData(GL_ARRAY_BUFFER, leg_l.outuv.size() * sizeof(glm::vec2), &leg_l.outuv[0], GL_STATIC_DRAW);
+	tAttribute = glGetAttribLocation(s_program, "vTexCoord");
+	glVertexAttribPointer(tAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0); //--- 텍스처 좌표 속성
+	glEnableVertexAttribArray(tAttribute);
+
 	//다리 오
 	glGenVertexArrays(1, &leg_r_VAO);
-	glGenBuffers(2, leg_r_VBO);
+	glGenBuffers(3, leg_r_VBO);
 
 	l_r = leg_r.loadObj_normalize_center("leg_r_f.obj");
 
@@ -665,14 +769,20 @@ void InitBuffer()
 	glEnableVertexAttribArray(pAttribute);
 
 	glBindBuffer(GL_ARRAY_BUFFER, leg_r_VBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, leg_r.outvertex.size() * sizeof(glm::vec3), &leg_r.outnormal[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, leg_r.outnormal.size() * sizeof(glm::vec3), &leg_r.outnormal[0], GL_STATIC_DRAW);
 	nAttribute = glGetAttribLocation(s_program, "aNormal");
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
 
+	glBindBuffer(GL_ARRAY_BUFFER, leg_r_VBO[2]);
+	glBufferData(GL_ARRAY_BUFFER, leg_r.outuv.size() * sizeof(glm::vec2), &leg_r.outuv[0], GL_STATIC_DRAW);
+	tAttribute = glGetAttribLocation(s_program, "vTexCoord");
+	glVertexAttribPointer(tAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0); //--- 텍스처 좌표 속성
+	glEnableVertexAttribArray(tAttribute);
+
 
 	glGenVertexArrays(1, &oak_VAO);
-	glGenBuffers(2, oak_VBO);
+	glGenBuffers(3, oak_VBO);
 
 	o = oak.loadObj_normalize_center("oak.obj");
 
@@ -685,13 +795,19 @@ void InitBuffer()
 	glEnableVertexAttribArray(pAttribute);
 
 	glBindBuffer(GL_ARRAY_BUFFER, oak_VBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, oak.outvertex.size() * sizeof(glm::vec3), &oak.outnormal[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, oak.outnormal.size() * sizeof(glm::vec3), &oak.outnormal[0], GL_STATIC_DRAW);
 	nAttribute = glGetAttribLocation(s_program, "aNormal");
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
 
+	glBindBuffer(GL_ARRAY_BUFFER, oak_VBO[2]);
+	glBufferData(GL_ARRAY_BUFFER, oak.outuv.size() * sizeof(glm::vec2), &oak.outuv[0], GL_STATIC_DRAW);
+	tAttribute = glGetAttribLocation(s_program, "vTexCoord");
+	glVertexAttribPointer(tAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0); //--- 텍스처 좌표 속성
+	glEnableVertexAttribArray(tAttribute);
+
 	glGenVertexArrays(1, &trash_VAO);
-	glGenBuffers(2, trash_VBO);
+	glGenBuffers(3, trash_VBO);
 
 	tra = trash.loadObj_normalize_center("trash.obj");
 
@@ -704,10 +820,16 @@ void InitBuffer()
 	glEnableVertexAttribArray(pAttribute);
 
 	glBindBuffer(GL_ARRAY_BUFFER, trash_VBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, trash.outvertex.size() * sizeof(glm::vec3), &trash.outnormal[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, trash.outnormal.size() * sizeof(glm::vec3), &trash.outnormal[0], GL_STATIC_DRAW);
 	nAttribute = glGetAttribLocation(s_program, "aNormal");
 	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(nAttribute);
+
+	glBindBuffer(GL_ARRAY_BUFFER, trash_VBO[2]);
+	glBufferData(GL_ARRAY_BUFFER, trash.outuv.size() * sizeof(glm::vec2), &trash.outuv[0], GL_STATIC_DRAW);
+	tAttribute = glGetAttribLocation(s_program, "vTexCoord");
+	glVertexAttribPointer(tAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0); //--- 텍스처 좌표 속성
+	glEnableVertexAttribArray(tAttribute);
 
 	//// 5.1. VAO 객체 생성 및 바인딩
 	glGenVertexArrays(1, &LINE_VAO);

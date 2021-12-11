@@ -117,9 +117,6 @@ void Display()
 	glBindTexture(GL_TEXTURE_2D, tex_head);
 	glDrawArrays(GL_TRIANGLES, 0, hb);
 
-	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
-	glUniform3f(outColorLocation, 1.0f, 0.0f, 0.0f);
-
 	S = glm::scale(model, glm::vec3(0.2f, 0.15f, 0.15f));
 	T = glm::translate(model, glm::vec3(-0.18f + exmove, -0.31f + move_y, 4.0f));
 	R = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -128,6 +125,8 @@ void Display()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
 
 	glBindVertexArray(arm_l_VAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, tex_arm_l);
 	glDrawArrays(GL_TRIANGLES, 0, a_l);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.15f, 0.15f));
@@ -138,10 +137,9 @@ void Display()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
 
 	glBindVertexArray(arm_r_VAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, tex_arm_r);
 	glDrawArrays(GL_TRIANGLES, 0, a_r);
-
-	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
-	glUniform3f(outColorLocation, 0.0f, 0.0f, 1.0f);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.25f, 0.23f));
 	T = glm::translate(model, glm::vec3(-0.07f + exmove, -0.5f + move_y, 4.0f));
@@ -151,6 +149,8 @@ void Display()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
 
 	glBindVertexArray(leg_l_VAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, tex_leg_l);
 	glDrawArrays(GL_TRIANGLES, 0, l_l);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.25f, 0.23f));
@@ -161,12 +161,14 @@ void Display()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
 
 	glBindVertexArray(leg_r_VAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, tex_leg_r);
 	glDrawArrays(GL_TRIANGLES, 0, l_r);
 
 
 	//¹Ù´Ú
-	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
-	glUniform3f(outColorLocation, 1.0f, 0.6f, 0.3f);
+	/*outColorLocation = glGetUniformLocation(s_program, "Out_Color");
+	glUniform3f(outColorLocation, 1.0f, 0.6f, 0.3f);*/
 
 	S = glm::scale(model, glm::vec3(5.0f, 3.0f, 7.0f));
 	T = glm::translate(model, glm::vec3(0.0f, -3.7f, 0.0f));
@@ -191,6 +193,11 @@ void Display()
 		glBindVertexArray(t[i].VAO);
 		glDrawArrays(GL_TRIANGLES, 0, t[i].tree);
 	}
+
+	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
+	glUniform3f(outColorLocation, 1.0f, 1.0f, 1.0f);
+
+
 	for (int i = 0; i < 5; i++) {
 		if (obs_l[i].show == 1) {
 			S = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
@@ -199,6 +206,14 @@ void Display()
 			glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
 
 			glBindVertexArray(obs_l[i].VAO);
+			if (obs_l[i].obstacle == o) {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tex_oak);
+			}
+			else if (obs_l[i].obstacle == tra) {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tex_trash);
+			}
 			glDrawArrays(GL_TRIANGLES, 0, obs_l[i].obstacle);
 		}
 	}
@@ -210,6 +225,14 @@ void Display()
 			glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
 
 			glBindVertexArray(obs_c[i].VAO);
+			if (obs_c[i].obstacle == o) {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tex_oak);
+			}
+			else if (obs_l[i].obstacle == tra) {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tex_trash);
+			}
 			glDrawArrays(GL_TRIANGLES, 0, obs_c[i].obstacle);
 		}
 	}
@@ -221,6 +244,14 @@ void Display()
 			glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
 
 			glBindVertexArray(obs_r[i].VAO);
+			if (obs_r[i].obstacle == o) {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tex_oak);
+			}
+			else if (obs_l[i].obstacle == tra) {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tex_trash);
+			}
 			glDrawArrays(GL_TRIANGLES, 0, obs_r[i].obstacle);
 		}
 	}
