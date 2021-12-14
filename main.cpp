@@ -2,6 +2,12 @@
 #define  _CRT_SECURE_NO_WARNINGS
 #define STB_IMAGE_IMPLEMENTATION
 
+
+//#include <stdio.h>
+//#include <Windows.h>
+//#include <conio.h>
+
+
 #include <iostream>
 #include <vector>
 #include <GL/glew.h>
@@ -24,10 +30,12 @@ void Timefunc3(int value);
 void Timefunc4(int value);
 void TimerJump(int value);
 void Timefunc_gameend(int value);
+void Timerclear(int value);
 void crush();
 
 int j_value = 0;
 float move_y = 0;
+float move_z = 0;
 int j_d = 0;
 float rotate4die = 180.0f;
 int n_value = 0;
@@ -35,6 +43,11 @@ int m_value = 0;
 int heart = 0;
 int move_point = 1;
 int menu_point = 0;
+
+int leg_r_ck = 0;
+int shake_time = 0;
+int game_time = 0;
+int run_p = 0;
 
 int main(int argc, char** argv)
 {
@@ -79,7 +92,11 @@ void Display()
 	glClearColor(sky_r, sky_g, sky_b, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	glEnable(GL_DEPTH_TEST);
+	glFrontFace(GL_CCW);
+	glEnable(GL_CULL_FACE);
 
 	glUseProgram(s_program);
 
@@ -107,7 +124,7 @@ void Display()
 
 	//플레이어 몸통
 	S = glm::scale(model, glm::vec3(0.4f, 0.45f, 0.5f));
-	T = glm::translate(model, glm::vec3(0.0f + exmove, -0.11f + move_y, 4.0f));
+	T = glm::translate(model, glm::vec3(0.0f + exmove, -0.11f + move_y, 4.0f + move_z));
 	R = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 1.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R));
@@ -118,7 +135,7 @@ void Display()
 	glDrawArrays(GL_TRIANGLES, 0, hb);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.15f, 0.15f));
-	T = glm::translate(model, glm::vec3(-0.18f + exmove, -0.31f + move_y, 4.0f));
+	T = glm::translate(model, glm::vec3(-0.18f + exmove, -0.31f + move_y, 4.0f + move_z));
 	R = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 1.0f, 0.0f));
 	TRS = glm::rotate(model, glm::radians(-a), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
@@ -130,7 +147,7 @@ void Display()
 	glDrawArrays(GL_TRIANGLES, 0, a_l);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.15f, 0.15f));
-	T = glm::translate(model, glm::vec3(0.18f + exmove, -0.31f + move_y, 4.0f));
+	T = glm::translate(model, glm::vec3(0.18f + exmove, -0.31f + move_y, 4.0f + move_z));
 	R = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 1.0f, 0.0f));
 	TRS = glm::rotate(model, glm::radians(a), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
@@ -142,7 +159,7 @@ void Display()
 	glDrawArrays(GL_TRIANGLES, 0, a_r);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.25f, 0.23f));
-	T = glm::translate(model, glm::vec3(-0.07f + exmove, -0.5f + move_y, 4.0f));
+	T = glm::translate(model, glm::vec3(-0.07f + exmove, -0.5f + move_y, 4.0f + move_z));
 	R = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 1.0f, 0.0f));
 	TRS = glm::rotate(model, glm::radians(-a), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
@@ -154,7 +171,7 @@ void Display()
 	glDrawArrays(GL_TRIANGLES, 0, l_l);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.25f, 0.23f));
-	T = glm::translate(model, glm::vec3(0.07f + exmove, -0.5f + move_y, 4.0f));
+	T = glm::translate(model, glm::vec3(0.07f + exmove, -0.5f + move_y, 4.0f + move_z));
 	R = glm::rotate(model, glm::radians(rotate4die), glm::vec3(0.0f, 1.0f, 0.0f));
 	TRS = glm::rotate(model, glm::radians(a), glm::vec3(1.0f, 0.0f, 0.0f));
 	modelLocation = glGetUniformLocation(s_program, "model");
@@ -178,11 +195,21 @@ void Display()
 	glBindVertexArray(Hexa_VAO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture_ground);
-	glDrawArrays(GL_TRIANGLES, 0, hexadragon);	
+	glDrawArrays(GL_TRIANGLES, 0, hexadragon);
+
+	S = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+	T = glm::translate(model, glm::vec3(0.0f, 0.0f, -10.0f));
+	modelLocation = glGetUniformLocation(s_program, "model");
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T* S));
+
+	glBindVertexArray(Hexa_VAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture_sky);
+	glDrawArrays(GL_TRIANGLES, 0, hexadragon);
 	
 	//나무_1
-	outColorLocation = glGetUniformLocation(s_program, "Out_Color");
-	glUniform3f(outColorLocation, 0.0f, 0.8f, 0.0f);
+	/*outColorLocation = glGetUniformLocation(s_program, "Out_Color");
+	glUniform3f(outColorLocation, 0.0f, 0.8f, 0.0f);*/
 	
 	for (int i = 0; i < 10; i++) {
 		S = glm::scale(model, glm::vec3(0.7f, 1.0f, 0.7f));
@@ -191,6 +218,14 @@ void Display()
 		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
 
 		glBindVertexArray(t[i].VAO);
+		if (t[i].tree == tree_1) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, tex_tree1);
+		}
+		else if (t[i].tree == tree_2) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, tex_tree2);
+		}
 		glDrawArrays(GL_TRIANGLES, 0, t[i].tree);
 	}
 
@@ -217,6 +252,7 @@ void Display()
 			glDrawArrays(GL_TRIANGLES, 0, obs_l[i].obstacle);
 		}
 	}
+
 	for (int i = 0; i < 5; i++) {
 		if (obs_c[i].show == 1) {
 			S = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
@@ -229,13 +265,14 @@ void Display()
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, tex_oak);
 			}
-			else if (obs_l[i].obstacle == tra) {
+			else if (obs_c[i].obstacle == tra) {
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, tex_trash);
 			}
 			glDrawArrays(GL_TRIANGLES, 0, obs_c[i].obstacle);
 		}
 	}
+
 	for (int i = 0; i < 5; i++) {
 		if (obs_r[i].show == 1) {
 			S = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
@@ -248,15 +285,13 @@ void Display()
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, tex_oak);
 			}
-			else if (obs_l[i].obstacle == tra) {
+			else if (obs_r[i].obstacle == tra) {
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, tex_trash);
 			}
 			glDrawArrays(GL_TRIANGLES, 0, obs_r[i].obstacle);
 		}
 	}
-
-
 
 
 	glUseProgram(s_program2);
@@ -266,6 +301,21 @@ void Display()
 		glBindTexture(GL_TEXTURE_2D, texture_2d);
 		glDrawArrays(mod, 0, 9);
 	}
+	else if (menu_point == 1) {
+		glBindVertexArray(vao4);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture_cl);
+		glDrawArrays(mod, 0, 9);
+	}
+	else if (menu_point == 2) {
+		glBindVertexArray(vao4);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture_fa);
+		glDrawArrays(mod, 0, 9);
+	}
+	else {
+
+	}
 	glutSwapBuffers();
 
 }
@@ -273,11 +323,12 @@ void Display()
 int roofd_10 = 0;
 int roofa_10 = 0;
 
+
 void Keyboard(unsigned char key, int x, int y)
 {
 	switch (key) {
 	case 'g': { //뒤에서보기
-		menu_point++;
+		menu_point = 3;	
 		glutTimerFunc(10, Timefunc, 1);
 		glutTimerFunc(10, Timefunc4, 1);
 		glutTimerFunc(1000, Timefunc_gameend, 1);
@@ -433,7 +484,7 @@ void Timefunc3(int value) {
 	}
 }
 
-int leg_r_ck = 0;
+
 
 void Timefunc4(int value) {
 	if (move_value != 0) {
@@ -457,7 +508,7 @@ void Timefunc4(int value) {
 	
 }
 
-int shake_time = 0;
+
 
 void Timefunc5(int value) {
 	if (shake_time == 0) {
@@ -486,7 +537,7 @@ void Timefunc5(int value) {
 
 }
 
-int game_time = 0;
+
 
 void Timefunc_gameend(int value) {
 	game_time++;
@@ -495,17 +546,17 @@ void Timefunc_gameend(int value) {
 	sky_g -= 0.01f;
 	sky_b -= 0.01f;
 
-	light_r -= 0.03f;
-	light_g -= 0.03f;
-	light_b -= 0.03f;
+	light_r -= 0.02f;
+	light_g -= 0.02f;
+	light_b -= 0.02f;
 
-	if (game_time > 30) {
-		
-	}
-
-	if (game_time < 30) {
+	if (game_time <= 5) {
 		glutPostRedisplay();
 		glutTimerFunc(1000, Timefunc_gameend, 1);
+	}
+	else if (game_time > 5) {
+		glutTimerFunc(1, Timerclear, 1);
+		glutPostRedisplay();
 	}
 	
 }
@@ -517,6 +568,7 @@ void crush() {
 				if (heart == 1) {
 					obs_l[i].o_z -= 0.3f;
 					move_value = 0;
+					menu_point = 2;
 					//rotate4die += 180.0f;
 					glutPostRedisplay();
 					return;
@@ -541,6 +593,7 @@ void crush() {
 					obs_r[i].o_z -= 0.3f;
 					//rotate4die += 180.0f;
 					move_value = 0;
+					menu_point = 2;
 					glutPostRedisplay();
 					return;
 				}
@@ -563,6 +616,7 @@ void crush() {
 				if (heart == 1) {
 					obs_c[i].o_z -= 0.3f;
 					move_value = 0;
+					menu_point = 2;
 					//rotate4die += 180.0f;
 					glutPostRedisplay();
 					return;
@@ -581,6 +635,20 @@ void crush() {
 		}
 	}
 }
+
+
+void Timerclear(int value) {
+	if (run_p < 10) {
+		move_z -= 0.05f;
+		glutPostRedisplay();
+		glutTimerFunc(1, Timerclear, 1);
+	}
+	else {
+		menu_point = 1;
+		glutPostRedisplay();
+	}
+}
+
 void TimerJump(int value) {
 	if (j_value == 0) {
 		return;
