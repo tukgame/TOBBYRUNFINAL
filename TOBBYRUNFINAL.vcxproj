@@ -147,7 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment.glsl" />
+    <None Include="fragment2.glsl" />
     <None Include="vertex.glsl" />
+    <None Include="vertex2.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="init.h" />

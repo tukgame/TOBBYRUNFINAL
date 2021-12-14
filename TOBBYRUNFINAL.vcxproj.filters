@@ -29,6 +29,12 @@
     <None Include="vertex.glsl">
       <Filter>소스 파일</Filter>
     </None>
+    <None Include="fragment2.glsl">
+      <Filter>소스 파일</Filter>
+    </None>
+    <None Include="vertex2.glsl">
+      <Filter>소스 파일</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.h">
