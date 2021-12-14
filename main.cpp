@@ -90,8 +90,8 @@ int main(int argc, char** argv)
 	glutAddMenuEntry("autumn", 3);
 	glutAddMenuEntry("winter", 4);
 	GLint MySubMenuID = glutCreateMenu(SubMenu1); //서브메뉴. 하기에는 서브메뉴에 있는 항목들 나열
-	glutAddMenuEntry("JJanggu", 1);
-	glutAddMenuEntry("kpu JJanggu", 2);
+	glutAddMenuEntry("Skin 1", 1);
+	glutAddMenuEntry("Skin 2", 2);
 	GLint MyMainMenuID = glutCreateMenu(MyMainMenu); //메인메뉴. 하기에는 메인메뉴에 있는 항목들 나열
 	glutAddSubMenu("Skin", MySubMenuID);
 	glutAddSubMenu("Tree", MySubMenuID2);
@@ -460,50 +460,6 @@ void Keyboard(unsigned char key, int x, int y)
 		glutTimerFunc(10, Timefunc, 1);
 		glutTimerFunc(10, Timefunc4, 1);
 		glutTimerFunc(1000, Timefunc_gameend, 1);
-		break;
-	}
-	case '1': { //낮
-		sky_r = 0.4f;
-		sky_g = 0.6f;
-		sky_b = 0.8f;
-
-		light_r = 1.0f;
-		light_g = 1.0f;
-		light_b = 1.0f;
-		break;
-	}
-	case '2': { //밤
-		sky_r = 0.0f;
-		sky_g = 0.0f;
-		sky_b = 0.1f;
-
-		light_r = 0.5f;
-		light_g = 0.5f;
-		light_b = 0.5f;
-		break;
-	}
-	case 'u': { //위에서보기
-		camera_x = 0.0f;
-		camera_y = 7.0f;
-		camera_z = 0.1f;
-		break;
-	}
-	case 'b': { //뒤에서보기
-		camera_x = 0.0f;
-		camera_y = 0.7f;
-		camera_z = 2.0f;
-		break;
-	}
-	case 'B': {
-		camera_x = 0.0f;
-		camera_y = 0.0f;
-		camera_z = 4.0f;
-		break;
-	}
-	case 'U': {
-		camera_x = 8.0f;
-		camera_y = 0.0f;
-		camera_z = 0.0f;
 		break;
 	}
 	case 'a': {
