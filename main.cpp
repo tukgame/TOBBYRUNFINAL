@@ -31,6 +31,9 @@ void Timefunc4(int value);
 void TimerJump(int value);
 void Timefunc_gameend(int value);
 void Timerclear(int value);
+void MyMainMenu(int entryID);
+void SubMenu1(int entryID);
+void SubMenu2(int entryID);
 void crush();
 
 int j_value = 0;
@@ -48,6 +51,8 @@ int leg_r_ck = 0;
 int shake_time = 0;
 int game_time = 0;
 int run_p = 0;
+
+int move_value = 1;
 
 int main(int argc, char** argv)
 {
@@ -75,6 +80,21 @@ int main(int argc, char** argv)
 	InitBuffer();
 	InitBuffermenu();
 	set();
+
+	GLint MySubMenuID2 = glutCreateMenu(SubMenu2); //서브메뉴. 하기에는 서브메뉴에 있는 항목들 나열
+	glutAddMenuEntry("Spring", 1);
+	glutAddMenuEntry("Summer", 2);
+	glutAddMenuEntry("autumn", 3);
+	glutAddMenuEntry("winter", 4);
+	GLint MySubMenuID = glutCreateMenu(SubMenu1); //서브메뉴. 하기에는 서브메뉴에 있는 항목들 나열
+	glutAddMenuEntry("JJanggu", 1);
+	glutAddMenuEntry("kpu JJanggu", 2);
+	GLint MyMainMenuID = glutCreateMenu(MyMainMenu); //메인메뉴. 하기에는 메인메뉴에 있는 항목들 나열
+	glutAddSubMenu("Skin", MySubMenuID);
+	glutAddSubMenu("Tree", MySubMenuID2);
+	glutAddMenuEntry("Exit", 2);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+
 	glutDisplayFunc(Display);
 	glutReshapeFunc(Reshape);
 	//glutTimerFunc(10, Timefunc, 1);
@@ -323,6 +343,35 @@ void Display()
 int roofd_10 = 0;
 int roofa_10 = 0;
 
+void MyMainMenu(int entryID) { //메인 메뉴에는 Color와 Exit를 나열
+	if (entryID == 1)
+		;
+	else if (entryID == 2)
+		exit(0);
+
+	glutPostRedisplay();
+}
+
+void SubMenu1(int entryID) { //서브 메뉴에는 Red, Green, Blue 순으로 나열
+	if (entryID == 1)
+		;
+	else if (entryID == 2)
+		;
+	glutPostRedisplay();
+}
+
+void SubMenu2(int entryID) { //서브 메뉴에는 Red, Green, Blue 순으로 나열
+	if (entryID == 1)
+		;
+	else if (entryID == 2)
+		;
+	else if (entryID == 3)
+		;
+	else if (entryID == 4)
+		;
+	glutPostRedisplay();
+}
+
 
 void Keyboard(unsigned char key, int x, int y)
 {
@@ -401,6 +450,35 @@ void Keyboard(unsigned char key, int x, int y)
 		glutTimerFunc(50, TimerJump, 1);
 		break;
 	}
+	case 'r': {
+		if (menu_point == 1 || menu_point == 2) {
+			set();
+			exmove = 0.0f;
+			camera_z = 2.0f;
+			j_value = 0;
+			move_y = 0;
+			move_z = 0;
+			j_d = 0;
+			rotate4die = 180.0f;
+			n_value = 0;
+			m_value = 0;
+			heart = 0;
+			move_point = 1;
+			menu_point = 3;
+
+			leg_r_ck = 0;
+			shake_time = 0;
+			game_time = 0;
+			run_p = 0;
+
+			move_value = 1;
+
+			glutTimerFunc(10, Timefunc, 1);
+			glutTimerFunc(10, Timefunc4, 1);
+			glutTimerFunc(1000, Timefunc_gameend, 1);
+		}
+		break;
+	}
 	case 'q': {
 		exit(EXIT_FAILURE);
 		break;
@@ -409,8 +487,6 @@ void Keyboard(unsigned char key, int x, int y)
 	glutPostRedisplay();
 }
 
-
-int move_value = 1;
 void Timefunc(int value) {
 	if (move_value == 0) {
 		return;
@@ -638,12 +714,22 @@ void crush() {
 
 
 void Timerclear(int value) {
-	if (run_p < 10) {
-		move_z -= 0.05f;
+	if (run_p < 100) {
+		for (int i = 0; i < 5; ++i) {
+			obs_c[i].show = 0;
+			obs_r[i].show = 0;
+			obs_l[i].show = 0;
+		}
+
+		move_z -= 0.08f;
+		camera_z -= 0.02f;
+
+		run_p++;
 		glutPostRedisplay();
-		glutTimerFunc(1, Timerclear, 1);
+		glutTimerFunc(10, Timerclear, 1);
 	}
 	else {
+		move_value = 0;
 		menu_point = 1;
 		glutPostRedisplay();
 	}
