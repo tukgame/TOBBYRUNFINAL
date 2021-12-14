@@ -47,6 +47,8 @@ int heart = 1;
 int move_point = 1;
 int menu_point = 0;
 
+int tree_mod = 0;
+
 int leg_r_ck = 0;
 int shake_time = 0;
 int game_time = 0;
@@ -240,11 +242,33 @@ void Display()
 		glBindVertexArray(t[i].VAO);
 		if (t[i].tree == tree_1) {
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, tex_tree1);
+			if (tree_mod == 0) {
+				glBindTexture(GL_TEXTURE_2D, tex_tree1);
+			}
+			else if (tree_mod == 1) {
+				glBindTexture(GL_TEXTURE_2D, tex_spring1);
+			}
+			else if (tree_mod == 2) {
+				glBindTexture(GL_TEXTURE_2D, tex_autum1);
+			}
+			else if (tree_mod == 3) {
+				glBindTexture(GL_TEXTURE_2D, tex_winter1);
+			}
 		}
 		else if (t[i].tree == tree_2) {
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, tex_tree2);
+			if (tree_mod == 0) {
+				glBindTexture(GL_TEXTURE_2D, tex_tree2);
+			}
+			else if (tree_mod == 1) {
+				glBindTexture(GL_TEXTURE_2D, tex_spring2);
+			}
+			else if (tree_mod == 2) {
+				glBindTexture(GL_TEXTURE_2D, tex_autum2);
+			}
+			else if (tree_mod == 3) {
+				glBindTexture(GL_TEXTURE_2D, tex_winter2);
+			}
 		}
 		glDrawArrays(GL_TRIANGLES, 0, t[i].tree);
 	}
@@ -386,13 +410,13 @@ void SubMenu1(int entryID) { //서브 메뉴에는 Red, Green, Blue 순으로 나열
 
 void SubMenu2(int entryID) { //서브 메뉴에는 Red, Green, Blue 순으로 나열
 	if (entryID == 1)
-		;
+		tree_mod = 1;
 	else if (entryID == 2)
-		;
+		tree_mod = 0;
 	else if (entryID == 3)
-		;
+		tree_mod = 2;
 	else if (entryID == 4)
-		;
+		tree_mod = 3;
 	glutPostRedisplay();
 }
 
@@ -489,6 +513,14 @@ void Keyboard(unsigned char key, int x, int y)
 			heart = 1;
 			move_point = 1;
 			menu_point = 3;
+
+			light_r = 1.0f;
+			light_g = 1.0f;
+			light_b = 1.0f;
+
+			sky_r = 0.4f;
+			sky_g = 0.6f;
+			sky_b = 0.8f;
 
 			leg_r_ck = 0;
 			shake_time = 0;
