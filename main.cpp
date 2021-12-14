@@ -48,6 +48,7 @@ int move_point = 1;
 int menu_point = 0;
 
 int tree_mod = 0;
+int skin_mod = 0;
 
 int leg_r_ck = 0;
 int shake_time = 0;
@@ -152,8 +153,14 @@ void Display()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R));
 
 	glBindVertexArray(head_VAO);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex_head);
+	if (skin_mod == 0) {
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex_head);
+	}
+	else {
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex_head2);
+	}
 	glDrawArrays(GL_TRIANGLES, 0, hb);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.15f, 0.15f));
@@ -164,8 +171,14 @@ void Display()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
 
 	glBindVertexArray(arm_l_VAO);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex_arm_l);
+	if (skin_mod == 0) {
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex_arm_l);
+	}
+	else {
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex_arm_l2);
+	}
 	glDrawArrays(GL_TRIANGLES, 0, a_l);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.15f, 0.15f));
@@ -176,8 +189,14 @@ void Display()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
 
 	glBindVertexArray(arm_r_VAO);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex_arm_r);
+	if (skin_mod == 0) {
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex_arm_r);
+	}
+	else {
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex_arm_r2);
+	}
 	glDrawArrays(GL_TRIANGLES, 0, a_r);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.25f, 0.23f));
@@ -188,8 +207,14 @@ void Display()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
 
 	glBindVertexArray(leg_l_VAO);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex_leg_l);
+	if (skin_mod == 0) {
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex_leg_l);
+	}
+	else {
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex_leg_l2);
+	}
 	glDrawArrays(GL_TRIANGLES, 0, l_l);
 
 	S = glm::scale(model, glm::vec3(0.2f, 0.25f, 0.23f));
@@ -200,8 +225,14 @@ void Display()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S * R * TRS));
 
 	glBindVertexArray(leg_r_VAO);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex_leg_r);
+	if (skin_mod == 0) {
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex_leg_r);
+	}
+	else {
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex_leg_r2);
+	}
 	glDrawArrays(GL_TRIANGLES, 0, l_r);
 
 
@@ -402,9 +433,9 @@ void MyMainMenu(int entryID) { //메인 메뉴에는 Color와 Exit를 나열
 
 void SubMenu1(int entryID) { //서브 메뉴에는 Red, Green, Blue 순으로 나열
 	if (entryID == 1)
-		;
+		skin_mod = 0;
 	else if (entryID == 2)
-		;
+		skin_mod = 2;
 	glutPostRedisplay();
 }
 

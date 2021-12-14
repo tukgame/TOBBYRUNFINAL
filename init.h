@@ -144,12 +144,12 @@ void set() {
 	for (i; i < 5; i++) {
 		obs_l[i].o_x = -1.0f;
 		obs_l[i].o_z = -4.0f + (i * 2.0f);
-		j = rand() % 3;
-		if (j == 0) {
+		j = rand() % 5;
+		if (j == 0 || j == 3) {
 			obs_l[i].obstacle = o;
 			obs_l[i].VAO = oak_VAO;
 		}
-		else if (j == 1){
+		else if (j == 1 || j == 4){
 			obs_l[i].obstacle = tra;
 			obs_l[i].VAO = trash_VAO;
 		}
@@ -164,12 +164,12 @@ void set() {
 	for (i; i < 5; i++) {
 		obs_c[i].o_x = 0.0f;
 		obs_c[i].o_z = -4.0f + (i * 2.0f);
-		j = rand() % 3;
-		if (j == 0) {
+		j = rand() % 5;
+		if (j == 0 || j == 3) {
 			obs_c[i].obstacle = o;
 			obs_c[i].VAO = oak_VAO;
 		}
-		else if (j == 1) {
+		else if (j == 1 || j == 4) {
 			obs_c[i].obstacle = tra;
 			obs_c[i].VAO = trash_VAO;
 		}
@@ -183,12 +183,12 @@ void set() {
 	for (i; i < 5; i++) {
 		obs_r[i].o_x = 1.0f;
 		obs_r[i].o_z = -4.0f + (i * 2.0f);
-		j = rand() % 3;
-		if (j == 0) {
+		j = rand() % 5;
+		if (j == 0 || j == 3) {
 			obs_r[i].obstacle = o;
 			obs_r[i].VAO = oak_VAO;
 		}
-		else if (j == 1) {
+		else if (j == 1 || j == 4) {
 			obs_r[i].obstacle = tra;
 			obs_r[i].VAO = trash_VAO;
 		}
@@ -398,7 +398,7 @@ GLubyte* LoadDIBitmap(const char* filename, BITMAPINFO** info)
 }
 
 unsigned int tex_head, tex_arm_l, tex_arm_r, tex_leg_l, tex_leg_r, texture_2d, texture_sky, texture_cl, texture_fa, texture_ground, tex_fail, tex_suc, tex_oak, tex_trash, tex_tree1, tex_tree2, tex_heart, tex_heart2;
-unsigned int tex_winter1, tex_winter2, tex_spring1, tex_spring2, tex_autum1, tex_autum2;
+unsigned int tex_winter1, tex_winter2, tex_spring1, tex_spring2, tex_autum1, tex_autum2, tex_head2, tex_arm_l2, tex_arm_r2, tex_leg_l2, tex_leg_r2;
 BITMAPINFO* bmp;
 
 void InitTexture()
@@ -856,6 +856,111 @@ void InitTexture()
 	// 텍스처 로드 및 생성
 	//int width, height, nrChannels;
 	data = stbi_load("heart_1_UV_color.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	glGenTextures(1, &tex_head2);
+	glBindTexture(GL_TEXTURE_2D, tex_head2);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("headbody_UV_color_2.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	glGenTextures(1, &tex_arm_r2);
+	glBindTexture(GL_TEXTURE_2D, tex_arm_r2);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("arm_r_UV_color_2.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	glGenTextures(1, &tex_arm_l2);
+	glBindTexture(GL_TEXTURE_2D, tex_arm_l2);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("arm_l_UV_color_2.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	glGenTextures(1, &tex_leg_r2);
+	glBindTexture(GL_TEXTURE_2D, tex_leg_r2);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("leg_r_UV_color_2.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	glGenTextures(1, &tex_leg_l2);
+	glBindTexture(GL_TEXTURE_2D, tex_leg_l2);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("leg_l_UV_color_2.bmp", &width, &height, &nrChannels, 0);
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
