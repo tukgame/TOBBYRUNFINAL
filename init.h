@@ -29,6 +29,9 @@ GLuint trash_VAO;
 GLuint trash_VBO[3];
 GLuint oak_VAO;
 GLuint oak_VBO[3];
+GLuint heart_VAO;
+GLuint heart_VBO[3];
+
 
 GLuint LINE_VAO;
 GLuint LINE_VBO[3];
@@ -43,6 +46,7 @@ objReader leg_l;
 objReader leg_r;
 objReader trash;
 objReader oak;
+objReader heartitem;
 
 
 
@@ -70,6 +74,7 @@ int l_l;
 int l_r;
 int tra;
 int o;
+int ht;
 
 float exmove = 0.0f;
 
@@ -139,29 +144,38 @@ void set() {
 	for (i; i < 5; i++) {
 		obs_l[i].o_x = -1.0f;
 		obs_l[i].o_z = -4.0f + (i * 2.0f);
-		j = rand() % 2;
+		j = rand() % 3;
 		if (j == 0) {
 			obs_l[i].obstacle = o;
 			obs_l[i].VAO = oak_VAO;
 		}
-		else {
+		else if (j == 1){
 			obs_l[i].obstacle = tra;
 			obs_l[i].VAO = trash_VAO;
 		}
+		else if (j == 2) {
+			obs_l[i].obstacle = ht;
+			obs_l[i].VAO = heart_VAO;
+		}
+
 		obs_l[i].show = 0;
 	}
 	i = 0;
 	for (i; i < 5; i++) {
 		obs_c[i].o_x = 0.0f;
 		obs_c[i].o_z = -4.0f + (i * 2.0f);
-		j = rand() % 2;
+		j = rand() % 3;
 		if (j == 0) {
 			obs_c[i].obstacle = o;
 			obs_c[i].VAO = oak_VAO;
 		}
-		else {
+		else if (j == 1) {
 			obs_c[i].obstacle = tra;
 			obs_c[i].VAO = trash_VAO;
+		}
+		else if (j == 2) {
+			obs_c[i].obstacle = ht;
+			obs_c[i].VAO = heart_VAO;
 		}
 		obs_c[i].show = 0;
 	}
@@ -169,14 +183,18 @@ void set() {
 	for (i; i < 5; i++) {
 		obs_r[i].o_x = 1.0f;
 		obs_r[i].o_z = -4.0f + (i * 2.0f);
-		j = rand() % 2;
+		j = rand() % 3;
 		if (j == 0) {
 			obs_r[i].obstacle = o;
 			obs_r[i].VAO = oak_VAO;
 		}
-		else {
+		else if (j == 1) {
 			obs_r[i].obstacle = tra;
 			obs_r[i].VAO = trash_VAO;
+		}
+		else if (j == 2) {
+			obs_r[i].obstacle = ht;
+			obs_r[i].VAO = heart_VAO;
 		}
 		obs_r[i].show = 0;
 	}
@@ -941,6 +959,28 @@ void InitBuffer()
 
 	glBindBuffer(GL_ARRAY_BUFFER, trash_VBO[2]);
 	glBufferData(GL_ARRAY_BUFFER, trash.outuv.size() * sizeof(glm::vec2), &trash.outuv[0], GL_STATIC_DRAW);
+	tAttribute = glGetAttribLocation(s_program, "vTexCoord");
+	glVertexAttribPointer(tAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0); //--- 텍스처 좌표 속성
+	glEnableVertexAttribArray(tAttribute);
+
+	ht = heartitem.loadObj_normalize_center("item_1.obj");
+
+	glUseProgram(s_program);
+	glBindVertexArray(heart_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, heart_VBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, heartitem.outvertex.size() * sizeof(glm::vec3), &heartitem.outvertex[0], GL_STATIC_DRAW);
+	pAttribute = glGetAttribLocation(s_program, "aPos");
+	glVertexAttribPointer(pAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(pAttribute);
+
+	glBindBuffer(GL_ARRAY_BUFFER, heart_VBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, heartitem.outnormal.size() * sizeof(glm::vec3), &heartitem.outnormal[0], GL_STATIC_DRAW);
+	nAttribute = glGetAttribLocation(s_program, "aNormal");
+	glVertexAttribPointer(nAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(nAttribute);
+
+	glBindBuffer(GL_ARRAY_BUFFER, heart_VBO[2]);
+	glBufferData(GL_ARRAY_BUFFER, heartitem.outuv.size() * sizeof(glm::vec2), &heartitem.outuv[0], GL_STATIC_DRAW);
 	tAttribute = glGetAttribLocation(s_program, "vTexCoord");
 	glVertexAttribPointer(tAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0); //--- 텍스처 좌표 속성
 	glEnableVertexAttribArray(tAttribute);

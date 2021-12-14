@@ -43,7 +43,7 @@ int j_d = 0;
 float rotate4die = 180.0f;
 int n_value = 0;
 int m_value = 0;
-int heart = 0;
+int heart = 1;
 int move_point = 1;
 int menu_point = 0;
 
@@ -641,7 +641,13 @@ void crush() {
 	for (int i = 0; i < 5; i++) {
 		if (obs_l[i].o_z >= 3.95f && obs_l[i].o_z <= 4.05f && obs_l[i].show == 1 && j_d == 0) {
 			if (exmove <= -1.0f) {
-				if (heart == 1) {
+				if (obs_l[i].obstacle == ht) {
+					obs_c[i].show = 0;
+					heart++;
+					glutPostRedisplay();
+					return;
+				}
+				if (heart == 0) {
 					obs_l[i].o_z -= 0.3f;
 					move_value = 0;
 					menu_point = 2;
@@ -656,16 +662,21 @@ void crush() {
 						//exmove = exmove + 1.0f;
 						glutTimerFunc(1, Timefunc2, 1);
 					}
-					cout << "heart = 1" << endl;
 					glutTimerFunc(10, Timefunc5, 1);
-					heart = 1;
+					heart--;
 					return;
 				}
 			}
 		}
 		if (obs_r[i].o_z >= 3.95f && obs_r[i].o_z <= 4.05f && obs_r[i].show == 1 && j_d == 0) {
 			if (exmove >= 1.0f) {
-				if (heart == 1) {
+				if (obs_r[i].obstacle == ht) {
+					obs_c[i].show = 0;
+					heart++;
+					glutPostRedisplay();
+					return;
+				}
+				if (heart == 0) {
 					obs_r[i].o_z -= 0.3f;
 					//rotate4die += 180.0f;
 					move_value = 0;
@@ -682,14 +693,20 @@ void crush() {
 					}
 					cout << "heart = 1" << endl;
 					glutTimerFunc(10, Timefunc5, 1);
-					heart = 1;
+					heart--;
 					return;
 				}
 			}
 		}
 		if (obs_c[i].o_z >= 3.95f && obs_c[i].o_z <= 4.05f && obs_c[i].show == 1 && j_d == 0) {
 			if (exmove >= -0.05f && exmove <= 0.05f) {
-				if (heart == 1) {
+				if (obs_c[i].obstacle == ht) {
+					obs_c[i].show = 0;
+					heart++;
+					glutPostRedisplay();
+					return;
+				}
+				if (heart == 0) {
 					obs_c[i].o_z -= 0.3f;
 					move_value = 0;
 					menu_point = 2;
@@ -704,7 +721,7 @@ void crush() {
 					glutTimerFunc(10, Timefunc2, 1);
 					cout << "heart = 1" << endl;
 					glutTimerFunc(10, Timefunc5, 1);
-					heart = 1;
+					heart--;
 					return;
 				}
 			}
@@ -742,7 +759,7 @@ void TimerJump(int value) {
 	else if (j_value == 1) {
 			move_y = 0.1 * j_d;
 			j_d++;
-			if (j_d == 5) {
+			if (j_d == 8) {
 				j_value = 2;
 			}
 	}
