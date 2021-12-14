@@ -269,6 +269,10 @@ void Display()
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, tex_trash);
 			}
+			else if (obs_l[i].obstacle == ht) {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tex_heart);
+			}
 			glDrawArrays(GL_TRIANGLES, 0, obs_l[i].obstacle);
 		}
 	}
@@ -288,6 +292,10 @@ void Display()
 			else if (obs_c[i].obstacle == tra) {
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, tex_trash);
+			}
+			else if (obs_c[i].obstacle == ht) {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tex_heart);
 			}
 			glDrawArrays(GL_TRIANGLES, 0, obs_c[i].obstacle);
 		}
@@ -309,8 +317,24 @@ void Display()
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, tex_trash);
 			}
+			else if (obs_r[i].obstacle == ht) {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tex_heart);
+			}
 			glDrawArrays(GL_TRIANGLES, 0, obs_r[i].obstacle);
 		}
+	}
+
+	for (int i = 0; i < heart; ++i) {
+		S = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		T = glm::translate(model, glm::vec3(2.8f - (i*0.5f), 2.8f, -0.5f));
+		modelLocation = glGetUniformLocation(s_program, "model");
+		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(T * S));
+
+		glBindVertexArray(heart_VAO);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex_heart2);
+		glDrawArrays(GL_TRIANGLES, 0, ht);
 	}
 
 
@@ -462,7 +486,7 @@ void Keyboard(unsigned char key, int x, int y)
 			rotate4die = 180.0f;
 			n_value = 0;
 			m_value = 0;
-			heart = 0;
+			heart = 1;
 			move_point = 1;
 			menu_point = 3;
 
@@ -626,11 +650,11 @@ void Timefunc_gameend(int value) {
 	light_g -= 0.02f;
 	light_b -= 0.02f;
 
-	if (game_time <= 5) {
+	if (game_time <= 30) {
 		glutPostRedisplay();
 		glutTimerFunc(1000, Timefunc_gameend, 1);
 	}
-	else if (game_time > 5) {
+	else if (game_time > 30) {
 		glutTimerFunc(1, Timerclear, 1);
 		glutPostRedisplay();
 	}
@@ -642,8 +666,11 @@ void crush() {
 		if (obs_l[i].o_z >= 3.95f && obs_l[i].o_z <= 4.05f && obs_l[i].show == 1 && j_d == 0) {
 			if (exmove <= -1.0f) {
 				if (obs_l[i].obstacle == ht) {
-					obs_c[i].show = 0;
+					obs_l[i].show = 0;
 					heart++;
+					if (heart == 4) {
+						heart = 3;
+					}
 					glutPostRedisplay();
 					return;
 				}
@@ -671,8 +698,12 @@ void crush() {
 		if (obs_r[i].o_z >= 3.95f && obs_r[i].o_z <= 4.05f && obs_r[i].show == 1 && j_d == 0) {
 			if (exmove >= 1.0f) {
 				if (obs_r[i].obstacle == ht) {
-					obs_c[i].show = 0;
+					obs_r[i].show = 0;
 					heart++;
+					if (heart == 4) {
+						heart = 3;
+					}
+					cout << heart << endl;
 					glutPostRedisplay();
 					return;
 				}
@@ -691,9 +722,10 @@ void crush() {
 						//exmove = exmove - 1.0f;
 						glutTimerFunc(1, Timefunc3, 1);
 					}
-					cout << "heart = 1" << endl;
+					//cout << "heart = 1" << endl;
 					glutTimerFunc(10, Timefunc5, 1);
 					heart--;
+					cout << heart << endl;
 					return;
 				}
 			}
@@ -703,6 +735,9 @@ void crush() {
 				if (obs_c[i].obstacle == ht) {
 					obs_c[i].show = 0;
 					heart++;
+					if (heart == 4) {
+						heart = 3;
+					}
 					glutPostRedisplay();
 					return;
 				}

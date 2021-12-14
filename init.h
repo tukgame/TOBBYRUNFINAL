@@ -397,7 +397,7 @@ GLubyte* LoadDIBitmap(const char* filename, BITMAPINFO** info)
 	return bits;
 }
 
-unsigned int tex_head, tex_arm_l, tex_arm_r, tex_leg_l, tex_leg_r, texture_2d, texture_sky, texture_cl, texture_fa, texture_ground, tex_fail, tex_suc, tex_oak, tex_trash, tex_tree1, tex_tree2;
+unsigned int tex_head, tex_arm_l, tex_arm_r, tex_leg_l, tex_leg_r, texture_2d, texture_sky, texture_cl, texture_fa, texture_ground, tex_fail, tex_suc, tex_oak, tex_trash, tex_tree1, tex_tree2, tex_heart, tex_heart2;
 BITMAPINFO* bmp;
 
 void InitTexture()
@@ -697,6 +697,48 @@ void InitTexture()
 		std::cout << "Failed to load texture" << std::endl;
 	}
 	stbi_image_free(data);
+
+	glGenTextures(1, &tex_heart);
+	glBindTexture(GL_TEXTURE_2D, tex_heart);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("item_1_UV_color.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	glGenTextures(1, &tex_heart2);
+	glBindTexture(GL_TEXTURE_2D, tex_heart2);
+	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// 텍스처 로드 및 생성
+	//int width, height, nrChannels;
+	data = stbi_load("heart_1_UV_color.bmp", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
 }
 
 void InitBuffer()
@@ -962,6 +1004,9 @@ void InitBuffer()
 	tAttribute = glGetAttribLocation(s_program, "vTexCoord");
 	glVertexAttribPointer(tAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0); //--- 텍스처 좌표 속성
 	glEnableVertexAttribArray(tAttribute);
+
+	glGenVertexArrays(1, &heart_VAO);
+	glGenBuffers(3, heart_VBO);
 
 	ht = heartitem.loadObj_normalize_center("item_1.obj");
 
